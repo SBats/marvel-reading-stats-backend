@@ -1,0 +1,34 @@
+{
+  "name": "marvel-reading-stats-backend",
+  "version": "1.0.0",
+  "description": "A backend for the Marvel Reading Stats project",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests/express.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SBats/marvel-reading-stats-backend.git"
+  },
+  "keywords": [
+    "marvel",
+    "stats",
+    "reading",
+    "comics",
+    "node",
+    "express",
+    "REST",
+    "MongoDB"
+  ],
+  "author": "Sbats",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SBats/marvel-reading-stats-backend/issues"
+  },
+  "homepage": "https://github.com/SBats/marvel-reading-stats-backend#readme",
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^2.5.3",
+    "superagent": "^2.1.0"
+  }
+}
