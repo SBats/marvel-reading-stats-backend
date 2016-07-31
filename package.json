@@ -2,9 +2,10 @@
   "name": "marvel-reading-stats-backend",
   "version": "1.0.0",
   "description": "A backend for the Marvel Reading Stats project",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "mocha tests/express.test.js"
+    "test": "mocha src/tests/express.test.js",
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
@@ -27,8 +28,17 @@
   },
   "homepage": "https://github.com/SBats/marvel-reading-stats-backend#readme",
   "devDependencies": {
+    "eslint": "^3.2.0",
+    "eslint-config-airbnb-base": "^5.0.1",
+    "eslint-plugin-import": "^1.12.0",
     "expect.js": "^0.3.1",
     "mocha": "^2.5.3",
     "superagent": "^2.1.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongodb": "^2.2.5",
+    "morgan": "^1.7.0"
   }
 }
