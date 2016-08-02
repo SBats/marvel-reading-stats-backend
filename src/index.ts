@@ -1,26 +1,15 @@
 const express = require('express');
-const MongoClient = require('mongodb').MongoClient;
-const ObjectId = require('mongodb').ObjectId;
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 
+import Events from './models/events';
 
 // SETUP
 // ===================================
 
-const config = require('./config.json');
-
 const app = express();
 const port = process.env.PORT || 8080;
-const dbUrl = config.dbUrl;
-const collectionsList = [
-  'comics',
-  'events',
-  'series',
-  'creators',
-  'characters',
-];
-
+const events = new Events();
 
 // MIDDLEWARES
 // ===================================
@@ -35,8 +24,15 @@ app.use(logger('dev'));
 
 const router = express.Router();
 
+router.route('/events')
+  .get((req, res) => {
+    events.getAll()
+      .then(events => res.json(events))
+      .catch(err => res.send(err));
+  });
+
 router.get('/', (req, res) => {
-  res.json({message: 'Please select a collection, eg., /collections/messages'});
+  res.json({message: 'Welcome to MRS API !'});
 });
 
 app.use('/', router);
