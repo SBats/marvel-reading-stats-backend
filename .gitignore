@@ -1,2 +1,8 @@
 node_modules
+typings
 *.log
+
+src/config.json
+build/*
+
+!.gitkeep
