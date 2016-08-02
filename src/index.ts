@@ -31,6 +31,13 @@ router.route('/events')
       .catch(err => res.send(err));
   });
 
+router.route('/events/:marvelId')
+  .get((req, res) => {
+    events.getById(req.params.marvelId)
+      .then(event => res.json(event))
+      .catch(err => res.send(err));
+  });
+
 router.get('/', (req, res) => {
   res.json({message: 'Welcome to MRS API !'});
 });
