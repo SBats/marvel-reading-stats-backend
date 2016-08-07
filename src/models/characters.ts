@@ -10,7 +10,13 @@ export default class Characters {
   getAll(): Promise<any> {
     return this.dbService.connect()
       .then((db: any) => {
-        return db.collection('characters').find({}, {"name": 1, "marvelId": 1, _id: 0}).sort([['name', 1]]).toArray()
+        return db.collection('characters')
+          .find(
+            {},
+            {"name": 1, "marvelId": 1, _id: 0}
+          )
+          .sort([['name', 1]])
+          .toArray()
           .then((characters: any) => {
             db.close();
             return characters;
@@ -48,7 +54,6 @@ export default class Characters {
   getById(marvelId: string): Promise<any> {
     return this.dbService.connect()
       .then((db: any) => {
-        console.log(marvelId);
         return db.collection('characters')
           .find({"marvelId": parseInt(marvelId)}, {
             _id: 0,
@@ -61,7 +66,6 @@ export default class Characters {
           .limit(1)
           .next()
           .then((character: any) => {
-            console.log(character);
             db.close();
             return character;
           })
