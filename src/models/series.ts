@@ -13,9 +13,9 @@ export default class Series {
         return db.collection('series')
           .find(
             {},
-            {"name": 1, "marvelId": 1, _id: 0}
+            {"title": 1, "marvelId": 1, _id: 0}
           )
-          .sort([['name', 1]])
+          .sort([['title', 1]])
           .toArray()
           .then((series: any) => {
             db.close();
@@ -34,10 +34,10 @@ export default class Series {
       .then((db: any) => {
         return db.collection('series')
           .find(
-            {"name": {$regex: `^${query}`, $options: "i"}},
-            {"name": 1, "marvelId": 1, _id: 0}
+            {"title": {$regex: `^${query}`, $options: "i"}},
+            {"title": 1, "marvelId": 1, _id: 0}
           )
-          .sort([['name', 1]])
+          .sort([['title', 1]])
           .toArray()
           .then((series: any) => {
             db.close();
@@ -57,7 +57,7 @@ export default class Series {
         return db.collection('series')
           .find({"marvelId": parseInt(marvelId)}, {
             _id: 0,
-            "name": 1,
+            "title": 1,
             "description": 1,
             "urls": 1,
             "thumbnail": 1,
