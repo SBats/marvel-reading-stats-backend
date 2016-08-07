@@ -48,7 +48,6 @@ export default class Events {
   getById(marvelId: string): Promise<any> {
     return this.dbService.connect()
       .then((db: any) => {
-        console.log(marvelId);
         return db.collection('events')
           .find({"marvelId": parseInt(marvelId)}, {
             _id: 0,
@@ -61,7 +60,6 @@ export default class Events {
           .limit(1)
           .next()
           .then((event: any) => {
-            console.log(event);
             db.close();
             return event;
           })
