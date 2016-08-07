@@ -1,13 +1,16 @@
 import express = require("express");
 import Series from '../models/series';
+import Comics from '../models/comics';
 
 let router: SeriesRoutes;
 export default class SeriesRoutes {
   series: Series = null;
+  comics: Comics = null;
 
   constructor() {
     router = this;
     router.series = new Series();
+    router.comics = new Comics();
   }
 
   all(req: any, res: any): void {
@@ -24,8 +27,17 @@ export default class SeriesRoutes {
   }
 
   byId(req: any, res: any): void {
-    router.series.getById(req.params.marvelId)
-      .then(series => res.json(series))
+    const seriesId = req.params.marvelId;
+    router.series.getById(seriesId)
+      .then(series => {
+        const result = series;
+        router.comics.getAllBySeries(seriesId)
+          .then(comics => {
+            result.comics = comics;
+            res.json(result);
+          })
+          .catch(err => res.send(err));
+      })
       .catch(err => res.send(err));
   };
 };
