@@ -5,6 +5,8 @@ const logger = require('morgan');
 import EventsRoutes from './routes/events';
 import CharactersRoutes from './routes/characters';
 import ComicsRoutes from './routes/comics';
+import CreatorsRoutes from './routes/creators';
+
 
 // SETUP
 // ===================================
@@ -14,6 +16,7 @@ const port = process.env.PORT || 8080;
 const events = new EventsRoutes();
 const characters = new CharactersRoutes();
 const comics = new ComicsRoutes();
+const creators = new CreatorsRoutes();
 
 // MIDDLEWARES
 // ===================================
@@ -36,6 +39,9 @@ router.route('/characters/:marvelId').get(characters.byId);
 
 router.route('/comics').get(comics.all);
 router.route('/comics/:marvelId').get(comics.byId);
+
+router.route('/creators').get(creators.all);
+router.route('/creators/:marvelId').get(creators.byId);
 
 router.get('/', (req: any, res: any) => {
   res.json({message: 'Welcome to MRS API !'});
