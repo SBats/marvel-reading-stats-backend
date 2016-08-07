@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 
 import Events from './models/events';
+import Characters from './models/characters';
 
 // SETUP
 // ===================================
@@ -10,6 +11,7 @@ import Events from './models/events';
 const app = express();
 const port = process.env.PORT || 8080;
 const events = new Events();
+const characters = new Characters();
 
 // MIDDLEWARES
 // ===================================
@@ -40,6 +42,26 @@ router.route('/events')
 router.route('/events/:marvelId')
   .get((req, res) => {
     events.getById(req.params.marvelId)
+      .then(event => res.json(event))
+      .catch(err => res.send(err));
+  });
+
+router.route('/characters')
+  .get((req, res) => {
+    if (req.query.startWith) {
+      characters.getStartingBy(req.query.startWith)
+        .then(characters => res.json(characters))
+        .catch(err => res.send(err));
+    } else {
+      characters.getAll()
+        .then(characters => res.json(characters))
+        .catch(err => res.send(err));
+    }
+  });
+
+router.route('/characters/:marvelId')
+  .get((req, res) => {
+    characters.getById(req.params.marvelId)
       .then(event => res.json(event))
       .catch(err => res.send(err));
   });
