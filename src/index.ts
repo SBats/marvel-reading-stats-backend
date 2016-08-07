@@ -26,9 +26,15 @@ const router = express.Router();
 
 router.route('/events')
   .get((req, res) => {
-    events.getAll()
-      .then(events => res.json(events))
-      .catch(err => res.send(err));
+    if (req.query.startWith) {
+      events.getStartingBy(req.query.startWith)
+        .then(events => res.json(events))
+        .catch(err => res.send(err));
+    } else {
+      events.getAll()
+        .then(events => res.json(events))
+        .catch(err => res.send(err));
+    }
   });
 
 router.route('/events/:marvelId')
