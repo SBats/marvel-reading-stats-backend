@@ -10,7 +10,13 @@ export default class Comics {
   getAll(): Promise<any> {
     return this.dbService.connect()
       .then((db: any) => {
-        return db.collection('comics').find({}, {"title": 1, "marvelId": 1, _id: 0}).sort([['title', 1]]).toArray()
+        return db.collection('comics')
+          .find(
+            {},
+            {"title": 1, "marvelId": 1, "thumbnail": 1, "urls": 1, _id: 0}
+          )
+          .sort([['title', 1]])
+          .toArray()
           .then((comics: any) => {
             db.close();
             return comics;
@@ -29,7 +35,7 @@ export default class Comics {
         return db.collection('comics')
           .find(
             {"title": {$regex: `^${query}`, $options: "i"}},
-            {"title": 1, "marvelId": 1, _id: 0}
+            {"title": 1, "marvelId": 1, "thumbnail": 1, "urls": 1, _id: 0}
           )
           .sort([['title', 1]])
           .toArray()
