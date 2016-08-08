@@ -95,6 +95,28 @@ export default class Comics {
       .catch((err: any) => err);
   }
 
+  getAllByEvents(eventsId: string): Promise<any> {
+    return this.dbService.connect()
+      .then((db: any) => {
+        return db.collection('comics')
+          .find(
+            {"events.items.resourceURI": {$regex: `/${eventsId}$`, $options: "i"}},
+            {"title": 1, "marvelId": 1, "thumbnail": 1, "urls": 1, _id: 0}
+          )
+          .sort([['title', 1]])
+          .toArray()
+          .then((comics: any) => {
+            db.close();
+            return comics;
+          })
+          .catch((err: any) => {
+            db.close();
+            return err;
+          });
+      })
+      .catch((err: any) => err);
+  }
+
   getById(marvelId: string): Promise<any> {
     return this.dbService.connect()
       .then((db: any) => {
