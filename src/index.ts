@@ -52,6 +52,10 @@ router.get('/', (req: any, res: any) => {
   res.json({message: 'Welcome to MRS API !'});
 });
 
+router.get('*', (req: any, res: any) => {
+  res.send(`404 - Damn Ultron stall this resource!`, 404);
+});
+
 app.use('/', router);
 
 
