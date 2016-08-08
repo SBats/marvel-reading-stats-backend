@@ -1,13 +1,16 @@
 import express = require("express");
 import Events from '../models/events';
+import Comics from '../models/comics';
 
 let router: EventsRoutes;
 export default class EventsRoutes {
   events: Events = null;
+  comics: Comics = null;
 
   constructor() {
     router = this;
     router.events = new Events();
+    router.comics = new Comics();
   }
 
   all(req: any, res: any): void {
@@ -24,8 +27,17 @@ export default class EventsRoutes {
   }
 
   byId(req: any, res: any): void {
-    router.events.getById(req.params.marvelId)
-      .then(event => res.json(event))
+    const eventId = req.params.marvelId;
+    router.events.getById(eventId)
+      .then(event => {
+        const result = event;
+        router.comics.getAllByEvents(eventId)
+          .then(comics => {
+            result.comics = comics;
+            res.json(result);
+          })
+          .catch(err => res.send(err));
+      })
       .catch(err => res.send(err));
   };
 };
