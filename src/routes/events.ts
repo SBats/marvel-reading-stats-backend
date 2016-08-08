@@ -31,7 +31,7 @@ export default class EventsRoutes {
     router.events.getById(eventId)
       .then(event => {
         const result = event;
-        router.comics.getAllByEvents(eventId)
+        router.comics.getAllByEvent(eventId)
           .then(comics => {
             result.comics = comics;
             res.json(result);

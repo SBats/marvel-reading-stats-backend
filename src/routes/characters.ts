@@ -32,7 +32,7 @@ export default class CharactersRoutes {
     router.characters.getById(characterId)
       .then(character => {
         const result = character;
-        router.comics.getAllByCharacters(characterId)
+        router.comics.getAllByCharacter(characterId)
           .then(comics => {
             result.comics = comics;
             res.json(result);
