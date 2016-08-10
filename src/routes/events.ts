@@ -14,7 +14,6 @@ export default class EventsRoutes {
   }
 
   all(req: any, res: any): void {
-    console.log(router);
     if (req.query.startWith) {
       router.events.getStartingBy(req.query.startWith)
         .then(events => res.json(events))

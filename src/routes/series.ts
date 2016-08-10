@@ -14,7 +14,6 @@ export default class SeriesRoutes {
   }
 
   all(req: any, res: any): void {
-    console.log(router);
     if (req.query.startWith) {
       router.series.getStartingBy(req.query.startWith)
         .then(series => res.json(series))

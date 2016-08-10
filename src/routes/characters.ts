@@ -15,7 +15,6 @@ export default class CharactersRoutes {
   }
 
   all(req: any, res: any): void {
-    console.log(router);
     if (req.query.startWith) {
       router.characters.getStartingBy(req.query.startWith)
         .then(characters => res.json(characters))

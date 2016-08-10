@@ -11,7 +11,6 @@ export default class ComicsRoutes {
   }
 
   all(req: any, res: any): void {
-    console.log(router);
     if (req.query.startWith) {
       router.comics.getStartingBy(req.query.startWith)
         .then(comics => res.json(comics))

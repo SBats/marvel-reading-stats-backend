@@ -14,7 +14,6 @@ export default class CreatorsRoutes {
   }
 
   all(req: any, res: any): void {
-    console.log(router);
     if (req.query.startWith) {
       router.creators.getStartingBy(req.query.startWith)
         .then(creators => res.json(creators))
