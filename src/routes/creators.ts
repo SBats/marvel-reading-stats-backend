@@ -27,16 +27,12 @@ export default class CreatorsRoutes {
 
   byId(req: any, res: any): void {
     const creatorId = req.params.marvelId;
+    let result: any = null;
     router.creators.getById(creatorId)
-      .then(creator => {
-        const result = creator;
-        router.comics.getAllByCreator(creatorId)
-          .then(comics => {
-            result.comics = comics;
-            res.json(result);
-          })
-          .catch(err => res.send(err));
-      })
+      .then(creator => result = creator)
+      .then(() => router.comics.getAllByCreator(creatorId))
+      .then(comics => result.comics = comics)
+      .then(() => res.json(result))
       .catch(err => res.send(err));
   };
 };

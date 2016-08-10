@@ -27,16 +27,12 @@ export default class EventsRoutes {
 
   byId(req: any, res: any): void {
     const eventId = req.params.marvelId;
+    let result: any = null;
     router.events.getById(eventId)
-      .then(event => {
-        const result = event;
-        router.comics.getAllByEvent(eventId)
-          .then(comics => {
-            result.comics = comics;
-            res.json(result);
-          })
-          .catch(err => res.send(err));
-      })
+      .then(event => result = event)
+      .then(() => router.comics.getAllByEvent(eventId))
+      .then(comics => result.comics = comics)
+      .then(() => res.json(result))
       .catch(err => res.send(err));
   };
 };

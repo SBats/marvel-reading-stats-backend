@@ -28,16 +28,12 @@ export default class CharactersRoutes {
 
   byId(req: any, res: any): void {
     const characterId = req.params.marvelId;
+    let result: any = null;
     router.characters.getById(characterId)
-      .then(character => {
-        const result = character;
-        router.comics.getAllByCharacter(characterId)
-          .then(comics => {
-            result.comics = comics;
-            res.json(result);
-          })
-          .catch(err => res.send(err));
-      })
+      .then(character => result = character)
+      .then(() => router.comics.getAllByCharacter(characterId))
+      .then(comics => result.comics = comics)
+      .then(() => res.json(result))
       .catch(err => res.send(err));
   };
 };

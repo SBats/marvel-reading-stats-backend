@@ -27,16 +27,12 @@ export default class SeriesRoutes {
 
   byId(req: any, res: any): void {
     const seriesId = req.params.marvelId;
+    let result: any = null;
     router.series.getById(seriesId)
-      .then(series => {
-        const result = series;
-        router.comics.getAllBySeries(seriesId)
-          .then(comics => {
-            result.comics = comics;
-            res.json(result);
-          })
-          .catch(err => res.send(err));
-      })
+      .then(series => result = series)
+      .then(() => router.comics.getAllBySeries(seriesId))
+      .then(comics => result.comics = comics)
+      .then(() => res.json(result))
       .catch(err => res.send(err));
   };
 };
