@@ -7,6 +7,7 @@ import CharactersRoutes from './routes/characters';
 import ComicsRoutes from './routes/comics';
 import CreatorsRoutes from './routes/creators';
 import SeriesRoutes from './routes/series';
+import UsersRoutes from './routes/users';
 
 
 // SETUP
@@ -19,6 +20,7 @@ const characters = new CharactersRoutes();
 const comics = new ComicsRoutes();
 const creators = new CreatorsRoutes();
 const series = new SeriesRoutes();
+const users = new UsersRoutes();
 
 // MIDDLEWARES
 // ===================================
@@ -47,6 +49,10 @@ router.route('/creators/:marvelId').get(creators.byId);
 
 router.route('/series').get(series.all);
 router.route('/series/:marvelId').get(series.byId);
+
+router.route('/users/:email').get(users.getByEmail);
+router.route('/users/:email').post(users.create);
+router.route('/users/:email').delete(users.delete);
 
 router.get('/', (req: any, res: any) => {
   res.json({message: 'Welcome to MRS API !'});
