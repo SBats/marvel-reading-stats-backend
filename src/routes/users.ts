@@ -1,13 +1,16 @@
 import express = require("express");
 import Users from '../models/users';
+import Emails from '../services/emails';
 
 let router: UsersRoutes;
 export default class UsersRoutes {
   users: Users = null;
+  emails: Emails = null;
 
   constructor() {
     router = this;
     router.users = new Users();
+    router.emails = new Emails();
   }
 
   getByEmail(req: any, res: any): void {
@@ -31,6 +34,7 @@ export default class UsersRoutes {
       })
       .then(() => router.users.create(userEmail))
       .then(newUser => res.json(newUser))
+      .then(() => router.emails.notifyUserCreation(userEmail))
       .catch(err => res.send(err));
   }
 
