@@ -1,3 +1,11 @@
 {
-  "dbUrl": ""
+  "dbUrl": "",
+  "emailing": {
+    "from": "no-reply@provider.com",
+    "host": "smtp.provider.com",
+    "auth": {
+      "user": "test@provider.com",
+      "pass": "mypass"
+    }
+  }
 }
