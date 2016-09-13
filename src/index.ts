@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
+const config = require ('./config.json');
 
 import EventsRoutes from './routes/events';
 import CharactersRoutes from './routes/characters';
@@ -21,6 +22,7 @@ const comics = new ComicsRoutes();
 const creators = new CreatorsRoutes();
 const series = new SeriesRoutes();
 const users = new UsersRoutes();
+const baseUrl = config.apiBaseUrl ? `/${config.apiBaseUrl}` : '/';
 
 // MIDDLEWARES
 // ===================================
@@ -62,7 +64,7 @@ router.get('*', (req: any, res: any) => {
   res.send(`404 - Damn Ultron stall this resource!`, 404);
 });
 
-app.use('/', router);
+app.use(baseUrl, router);
 
 
 // START

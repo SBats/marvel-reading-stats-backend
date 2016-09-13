@@ -1,5 +1,6 @@
 {
   "dbUrl": "",
+  "apiBaseUrl": "",
   "emailing": {
     "from": "no-reply@provider.com",
     "host": "smtp.provider.com",
