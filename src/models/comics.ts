@@ -13,7 +13,7 @@ export default class Comics {
         return db.collection('comics')
           .find(
             {},
-            {"title": 1, "marvelId": 1, "thumbnail": 1, "urls": 1, _id: 0}
+            {'title': 1, 'marvelId': 1, 'thumbnail': 1, 'urls': 1, _id: 0}
           )
           .sort([['title', 1]])
           .toArray()
@@ -34,8 +34,8 @@ export default class Comics {
       .then((db: any) => {
         return db.collection('comics')
           .find(
-            {"title": {$regex: `^${query}`, $options: "i"}},
-            {"title": 1, "marvelId": 1, "thumbnail": 1, "urls": 1, _id: 0}
+            {'title': {$regex: `^${query}`, $options: 'i'}},
+            {'title': 1, 'marvelId': 1, 'thumbnail': 1, 'urls': 1, _id: 0}
           )
           .sort([['title', 1]])
           .toArray()
@@ -56,8 +56,8 @@ export default class Comics {
       .then((db: any) => {
         return db.collection('comics')
           .find(
-            {"series.resourceURI": {$regex: `/${seriesId}$`, $options: "i"}},
-            {"title": 1, "marvelId": 1, "thumbnail": 1, "urls": 1, _id: 0}
+            {'series.resourceURI': {$regex: `/${seriesId}$`, $options: 'i'}},
+            {'title': 1, 'marvelId': 1, 'thumbnail': 1, 'urls': 1, _id: 0}
           )
           .sort([['title', 1]])
           .toArray()
@@ -78,8 +78,8 @@ export default class Comics {
       .then((db: any) => {
         return db.collection('comics')
           .find(
-            {"characters.items.resourceURI": {$regex: `/${characterId}$`, $options: "i"}},
-            {"title": 1, "marvelId": 1, "thumbnail": 1, "urls": 1, _id: 0}
+            {'characters.items.resourceURI': {$regex: `/${characterId}$`, $options: 'i'}},
+            {'title': 1, 'marvelId': 1, 'thumbnail': 1, 'urls': 1, _id: 0}
           )
           .sort([['title', 1]])
           .toArray()
@@ -100,8 +100,8 @@ export default class Comics {
       .then((db: any) => {
         return db.collection('comics')
           .find(
-            {"events.items.resourceURI": {$regex: `/${eventId}$`, $options: "i"}},
-            {"title": 1, "marvelId": 1, "thumbnail": 1, "urls": 1, _id: 0}
+            {'events.items.resourceURI': {$regex: `/${eventId}$`, $options: 'i'}},
+            {'title': 1, 'marvelId': 1, 'thumbnail': 1, 'urls': 1, _id: 0}
           )
           .sort([['title', 1]])
           .toArray()
@@ -122,8 +122,8 @@ export default class Comics {
       .then((db: any) => {
         return db.collection('comics')
           .find(
-            {"creators.items.resourceURI": {$regex: `/${creatorId}$`, $options: "i"}},
-            {"title": 1, "marvelId": 1, "thumbnail": 1, "urls": 1, _id: 0}
+            {'creators.items.resourceURI': {$regex: `/${creatorId}$`, $options: 'i'}},
+            {'title': 1, 'marvelId': 1, 'thumbnail': 1, 'urls': 1, _id: 0}
           )
           .sort([['title', 1]])
           .toArray()
@@ -143,13 +143,13 @@ export default class Comics {
     return this.dbService.connect()
       .then((db: any) => {
         return db.collection('comics')
-          .find({"marvelId": parseInt(marvelId)}, {
+          .find({'marvelId': parseInt(marvelId, 10)}, {
             _id: 0,
-            "title": 1,
-            "description": 1,
-            "urls": 1,
-            "thumbnail": 1,
-            "marvelId": 1,
+            'title': 1,
+            'description': 1,
+            'urls': 1,
+            'thumbnail': 1,
+            'marvelId': 1,
           })
           .limit(1)
           .next()

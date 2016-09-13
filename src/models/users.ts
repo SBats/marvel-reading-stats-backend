@@ -12,9 +12,9 @@ export default class Users {
       .then((db: any) => {
         return db.collection('users')
           .insertOne({
-            "email": email,
-            "name": email.split('@')[0],
-            "collection": []
+            'email': email,
+            'name': email.split('@')[0],
+            'collection': []
           })
           .then((user: any) => {
             db.close();
@@ -32,7 +32,7 @@ export default class Users {
     return this.dbService.connect()
       .then((db: any) => {
         return db.collection('users')
-          .deleteOne({"email": email})
+          .deleteOne({'email': email})
           .then((user: any) => {
             db.close();
             return user;
@@ -49,11 +49,11 @@ export default class Users {
     return this.dbService.connect()
       .then((db: any) => {
         return db.collection('users')
-          .find({"email": email}, {
+          .find({'email': email}, {
             _id: 0,
-            "email": 1,
-            "name": 1,
-            "collection": 1
+            'email': 1,
+            'name': 1,
+            'collection': 1
           })
           .limit(1)
           .next()

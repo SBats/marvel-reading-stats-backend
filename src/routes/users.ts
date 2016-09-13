@@ -1,4 +1,3 @@
-import express = require("express");
 import Users from '../models/users';
 import Emails from '../services/emails';
 
@@ -16,7 +15,7 @@ export default class UsersRoutes {
   getByEmail(req: any, res: any): void {
     const userEmail = req.params.email;
     if (!userEmail) {
-      res.send("Invalid email parameter");
+      res.send('Invalid email parameter');
     } else {
       router.users.getByEmail(userEmail)
         .then(user => res.json(user))
@@ -29,7 +28,7 @@ export default class UsersRoutes {
     router.users.getByEmail(userEmail)
       .then(user => {
         if (user && user.email === userEmail) {
-          throw new Error("User already exists");
+          throw new Error('User already exists');
         }
       })
       .then(() => router.users.create(userEmail))
@@ -43,11 +42,11 @@ export default class UsersRoutes {
     router.users.getByEmail(userEmail)
       .then(user => {
         if (!user || !user.email === userEmail) {
-          throw new Error("User does not exists");
+          throw new Error('User does not exists');
         }
       })
       .then(() => router.users.delete(userEmail))
       .then(result => res.json(result))
       .catch(err => res.send(err));
-  };
-};
+  }
+}

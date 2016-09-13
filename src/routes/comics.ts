@@ -1,4 +1,3 @@
-import express = require("express");
 import Comics from '../models/comics';
 
 let router: ComicsRoutes;
@@ -26,5 +25,5 @@ export default class ComicsRoutes {
     router.comics.getById(req.params.marvelId)
       .then(comic => res.json(comic))
       .catch(err => res.send(err));
-  };
-};
+  }
+}

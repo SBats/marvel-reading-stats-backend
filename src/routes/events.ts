@@ -1,4 +1,3 @@
-import express = require("express");
 import Events from '../models/events';
 import Comics from '../models/comics';
 
@@ -34,5 +33,5 @@ export default class EventsRoutes {
       .then(comics => result.comics = comics)
       .then(() => res.json(result))
       .catch(err => res.send(err));
-  };
-};
+  }
+}

@@ -1,4 +1,3 @@
-import express = require("express");
 import Creators from '../models/creators';
 import Comics from '../models/comics';
 
@@ -34,5 +33,5 @@ export default class CreatorsRoutes {
       .then(comics => result.comics = comics)
       .then(() => res.json(result))
       .catch(err => res.send(err));
-  };
-};
+  }
+}

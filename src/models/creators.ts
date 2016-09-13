@@ -10,7 +10,7 @@ export default class Creators {
   getAll(): Promise<any> {
     return this.dbService.connect()
       .then((db: any) => {
-        return db.collection('creators').find({}, {"fullName": 1, "marvelId": 1, _id: 0}).sort([['fullName', 1]]).toArray()
+        return db.collection('creators').find({}, {'fullName': 1, 'marvelId': 1, _id: 0}).sort([['fullName', 1]]).toArray()
           .then((creators: any) => {
             db.close();
             return creators;
@@ -28,8 +28,8 @@ export default class Creators {
       .then((db: any) => {
         return db.collection('creators')
           .find(
-            {"fullName": {$regex: `^${query}`, $options: "i"}},
-            {"fullName": 1, "marvelId": 1, _id: 0}
+            {'fullName': {$regex: `^${query}`, $options: 'i'}},
+            {'fullName': 1, 'marvelId': 1, _id: 0}
           )
           .sort([['fullName', 1]])
           .toArray()
@@ -49,13 +49,13 @@ export default class Creators {
     return this.dbService.connect()
       .then((db: any) => {
         return db.collection('creators')
-          .find({"marvelId": parseInt(marvelId)}, {
+          .find({'marvelId': parseInt(marvelId, 10)}, {
             _id: 0,
-            "fullName": 1,
-            "description": 1,
-            "urls": 1,
-            "thumbnail": 1,
-            "marvelId": 1,
+            'fullName': 1,
+            'description': 1,
+            'urls': 1,
+            'thumbnail': 1,
+            'marvelId': 1,
           })
           .limit(1)
           .next()

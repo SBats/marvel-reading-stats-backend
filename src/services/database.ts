@@ -1,6 +1,5 @@
 const config = require('../config.json');
 const MongoClient = require('mongodb').MongoClient;
-const ObjectId = require('mongodb').ObjectId;
 
 export default class DatabaseService {
   dbUrl: string = config.dbUrl;
@@ -15,6 +14,6 @@ export default class DatabaseService {
   }
 
   connect() {
-    return MongoClient.connect(this.dbUrl)
+    return MongoClient.connect(this.dbUrl);
   }
 }

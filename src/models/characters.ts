@@ -13,7 +13,7 @@ export default class Characters {
         return db.collection('characters')
           .find(
             {},
-            {"name": 1, "marvelId": 1, _id: 0}
+            {'name': 1, 'marvelId': 1, _id: 0}
           )
           .sort([['name', 1]])
           .toArray()
@@ -34,8 +34,8 @@ export default class Characters {
       .then((db: any) => {
         return db.collection('characters')
           .find(
-            {"name": {$regex: `^${query}`, $options: "i"}},
-            {"name": 1, "marvelId": 1, _id: 0}
+            {'name': {$regex: `^${query}`, $options: 'i'}},
+            {'name': 1, 'marvelId': 1, _id: 0}
           )
           .sort([['name', 1]])
           .toArray()
@@ -55,13 +55,13 @@ export default class Characters {
     return this.dbService.connect()
       .then((db: any) => {
         return db.collection('characters')
-          .find({"marvelId": parseInt(marvelId)}, {
+          .find({'marvelId': parseInt(marvelId, 10)}, {
             _id: 0,
-            "name": 1,
-            "description": 1,
-            "urls": 1,
-            "thumbnail": 1,
-            "marvelId": 1,
+            'name': 1,
+            'description': 1,
+            'urls': 1,
+            'thumbnail': 1,
+            'marvelId': 1,
           })
           .limit(1)
           .next()
