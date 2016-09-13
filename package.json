@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/SBats/marvel-reading-stats-backend#readme",
   "devDependencies": {
+    "codelyzer": "0.0.28",
     "eslint": "^3.2.0",
     "eslint-config-airbnb-base": "^5.0.1",
     "eslint-plugin-import": "^1.12.0",
@@ -41,6 +42,7 @@
     "npm-run-all": "^2.3.0",
     "superagent": "^2.1.0",
     "supervisor": "^0.11.0",
+    "tslint": "^3.15.1",
     "typescript": "^1.8.10"
   },
   "dependencies": {
