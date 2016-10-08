@@ -16,11 +16,17 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
-from users import views
+from users import views as userViews
+from marvel import views as marvelViews
 
 router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
+router.register(r'users', userViews.UserViewSet)
+router.register(r'groups', userViews.GroupViewSet)
+router.register(r'comics', marvelViews.ComicViewSet)
+router.register(r'characters', marvelViews.CharacterViewSet)
+router.register(r'creators', marvelViews.CreatorViewSet)
+router.register(r'events', marvelViews.EventViewSet)
+router.register(r'series', marvelViews.SeriesViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
