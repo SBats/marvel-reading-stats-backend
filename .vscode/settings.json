@@ -1,0 +1,11 @@
+// Placez vos paramètres dans ce fichier pour remplacer les paramètres par défaut et les paramètres utilisateur.
+{
+  "editor.tabSize": 4,
+  "python.linting.flake8Enabled": true,
+  "python.linting.lintOnTextChange": true,
+  "python.linting.lintOnSave": true,
+  "python.pythonPath": "/home/batsman/Works/marvel/backend/dev/venv/bin/python",
+  "python.autoComplete.extraPaths": [
+    "/home/batsman/Works/marvel/backend/dev/venv/lib/python3.5/site-packages"
+  ]
+}
