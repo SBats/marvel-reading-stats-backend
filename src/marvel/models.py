@@ -10,17 +10,17 @@ class Comic(models.Model):
     """
     marvelId = models.IntegerField()  # marvelId
     title = models.CharField(max_length=200)  # title
-    variantDescription = models.TextField()  # variantDescription
-    description = models.TextField()  # description
-    pageCount = models.PositiveSmallIntegerField()  # pageCount
-    url = models.URLField()  # urls[0]
-    date = models.DateField()  # dates[0]
-    thumbnail = models.ImageField()  # thumbnail[0]
-    image = models.ImageField()  # images[0]
-    seriesList = models.ManyToManyField('Series', through='ComicSeries')  # series
-    creators = models.ManyToManyField('Creator', through='CreatorComic')  # creators
-    characters = models.ManyToManyField('Character', through='ComicCharacter')  # characters
-    events = models.ManyToManyField('Event', through='ComicEvent')  # events
+    variantDescription = models.TextField(blank=True)  # variantDescription
+    description = models.TextField(blank=True)  # description
+    pageCount = models.PositiveSmallIntegerField(default=0, blank=True)  # pageCount
+    url = models.URLField(blank=True)  # urls[0]
+    date = models.DateField(null=True, blank=True)  # dates[0]
+    thumbnail = models.ImageField(blank=True)  # thumbnail[0]
+    image = models.ImageField(blank=True)  # images[0]
+    seriesList = models.ManyToManyField('Series', through='ComicSeries', blank=True)  # series
+    creators = models.ManyToManyField('Creator', through='CreatorComic', blank=True)  # creators
+    characters = models.ManyToManyField('Character', through='ComicCharacter', blank=True)  # characters
+    events = models.ManyToManyField('Event', through='ComicEvent', blank=True)  # events
 
     def __str__(self):
         return self.title
@@ -35,12 +35,12 @@ class Character(models.Model):
     """
     marvelId = models.IntegerField()  # marvelId
     name = models.CharField(max_length=200)  # name
-    description = models.TextField()  # description
-    url = models.URLField()  # urls[0]
-    thumbnail = models.ImageField()  # thumbnail[0]
-    comics = models.ManyToManyField('Comic', through='ComicCharacter')  # comics
-    events = models.ManyToManyField('Event', through='CharacterEvent')  # events
-    seriesList = models.ManyToManyField('Series', through='CharacterSeries')  # series
+    description = models.TextField(blank=True)  # description
+    url = models.URLField(blank=True)  # urls[0]
+    thumbnail = models.ImageField(blank=True)  # thumbnail[0]
+    comics = models.ManyToManyField('Comic', through='ComicCharacter', blank=True)  # comics
+    events = models.ManyToManyField('Event', through='CharacterEvent', blank=True)  # events
+    seriesList = models.ManyToManyField('Series', through='CharacterSeries', blank=True)  # series
 
     def __str__(self):
         return self.name
@@ -55,14 +55,14 @@ class Creator(models.Model):
     """
     marvelId = models.IntegerField()  # marvelId
     firstName = models.CharField(max_length=200)  # firstName
-    lastName = models.CharField(max_length=200)  # lastName
-    suffix = models.CharField(max_length=200)  # suffix
+    lastName = models.CharField(max_length=200, blank=True)  # lastName
+    suffix = models.CharField(max_length=200, blank=True)  # suffix
     fullName = models.CharField(max_length=600)  # fullName
-    url = models.URLField()  # urls[0]
-    thumbnail = models.ImageField()  # thumbnail[0]
-    comics = models.ManyToManyField('Comic', through='CreatorComic')  # comics
-    events = models.ManyToManyField('Event', through='CreatorEvent')  # events
-    seriesList = models.ManyToManyField('Series', through='CreatorSeries')  # series
+    url = models.URLField(blank=True)  # urls[0]
+    thumbnail = models.ImageField(blank=True)  # thumbnail[0]
+    comics = models.ManyToManyField('Comic', through='CreatorComic', blank=True)  # comics
+    events = models.ManyToManyField('Event', through='CreatorEvent', blank=True)  # events
+    seriesList = models.ManyToManyField('Series', through='CreatorSeries', blank=True)  # series
 
     def __str__(self):
         return self.fullName
@@ -77,15 +77,15 @@ class Series(models.Model):
     """
     marvelId = models.IntegerField()  # marvelId
     title = models.CharField(max_length=200)  # title
-    description = models.TextField()  # description
-    url = models.URLField()  # urls[0]
-    startYear = models.PositiveSmallIntegerField()  # startYear
-    endYear = models.PositiveSmallIntegerField()  # endYear
-    thumbnail = models.ImageField()  # thumbnail[0]
-    characters = models.ManyToManyField('Character', through='CharacterSeries')  # characters
-    creators = models.ManyToManyField('Creator', through='CreatorSeries')  # creators
-    comics = models.ManyToManyField('Comic', through='ComicSeries')  # comics
-    events = models.ManyToManyField('Event', 'SeriesEvent')  # events
+    description = models.TextField(blank=True)  # description
+    url = models.URLField(blank=True)  # urls[0]
+    startYear = models.PositiveSmallIntegerField(null=True, blank=True)  # startYear
+    endYear = models.PositiveSmallIntegerField(null=True, blank=True)  # endYear
+    thumbnail = models.ImageField(blank=True)  # thumbnail[0]
+    characters = models.ManyToManyField('Character', through='CharacterSeries', blank=True)  # characters
+    creators = models.ManyToManyField('Creator', through='CreatorSeries', blank=True)  # creators
+    comics = models.ManyToManyField('Comic', through='ComicSeries', blank=True)  # comics
+    events = models.ManyToManyField('Event', through='SeriesEvent', blank=True)  # events
 
     def __str__(self):
         return self.title
@@ -100,15 +100,15 @@ class Event(models.Model):
     """
     marvelId = models.IntegerField()  # marvelId
     title = models.CharField(max_length=200)  # title
-    description = models.TextField()  # description
-    url = models.URLField()  # urls[0]
-    start = models.PositiveSmallIntegerField()  # start
-    end = models.PositiveSmallIntegerField()  # end
-    thumbnail = models.ImageField()  # thumbnail[0]
-    seriesList = models.ManyToManyField('Series', through='SeriesEvent')  # series
-    characters = models.ManyToManyField('Character', through='CharacterEvent')  # characters
-    creators = models.ManyToManyField('Creator', through='CreatorEvent')  # creators
-    comics = models.ManyToManyField('Comic', through='ComicEvent')  # comics
+    description = models.TextField(blank=True)  # description
+    url = models.URLField(blank=True)  # urls[0]
+    start = models.PositiveSmallIntegerField(null=True, blank=True)  # start
+    end = models.PositiveSmallIntegerField(null=True, blank=True)  # end
+    thumbnail = models.ImageField(blank=True)  # thumbnail[0]
+    seriesList = models.ManyToManyField('Series', through='SeriesEvent', blank=True)  # series
+    characters = models.ManyToManyField('Character', through='CharacterEvent', blank=True)  # characters
+    creators = models.ManyToManyField('Creator', through='CreatorEvent', blank=True)  # creators
+    comics = models.ManyToManyField('Comic', through='ComicEvent', blank=True)  # comics
 
     def __str__(self):
         return self.title
