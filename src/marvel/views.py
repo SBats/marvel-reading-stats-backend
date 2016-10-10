@@ -4,6 +4,7 @@ Marvel views
 
 from marvel.models import Character, Comic, Creator, Event, Series
 from rest_framework import viewsets
+from marvel.permissions import IsAccountAdminOrReadOnly
 import marvel.serializers
 
 
@@ -13,6 +14,7 @@ class CharacterViewSet(viewsets.ModelViewSet):
     """
     queryset = Character.objects.all()
     serializer_class = marvel.serializers.CharacterSerializer
+    permission_classes = [IsAccountAdminOrReadOnly]
 
 
 class ComicViewSet(viewsets.ModelViewSet):
@@ -21,6 +23,7 @@ class ComicViewSet(viewsets.ModelViewSet):
     """
     queryset = Comic.objects.all()
     serializer_class = marvel.serializers.ComicSerializer
+    permission_classes = [IsAccountAdminOrReadOnly]
 
 
 class CreatorViewSet(viewsets.ModelViewSet):
@@ -29,6 +32,7 @@ class CreatorViewSet(viewsets.ModelViewSet):
     """
     queryset = Creator.objects.all()
     serializer_class = marvel.serializers.CreatorSerializer
+    permission_classes = [IsAccountAdminOrReadOnly]
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -37,6 +41,7 @@ class EventViewSet(viewsets.ModelViewSet):
     """
     queryset = Event.objects.all()
     serializer_class = marvel.serializers.EventSerializer
+    permission_classes = [IsAccountAdminOrReadOnly]
 
 
 class SeriesViewSet(viewsets.ModelViewSet):
@@ -45,3 +50,4 @@ class SeriesViewSet(viewsets.ModelViewSet):
     """
     queryset = Series.objects.all()
     serializer_class = marvel.serializers.SeriesSerializer
+    permission_classes = [IsAccountAdminOrReadOnly]
