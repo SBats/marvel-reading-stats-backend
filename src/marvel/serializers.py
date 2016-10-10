@@ -4,7 +4,7 @@ from rest_framework import serializers
 from marvel.models import Character, Comic, Creator, Event, Series
 
 
-class CharacterSerializer(serializers.HyperlinkedModelSerializer):
+class CharacterSerializer(serializers.ModelSerializer):
     """Marvel Character DRF serializer"""
     class Meta:
         model = Character
@@ -18,9 +18,10 @@ class CharacterSerializer(serializers.HyperlinkedModelSerializer):
             'events',
             'seriesList',
             )
+        depth = 1
 
 
-class CreatorSerializer(serializers.HyperlinkedModelSerializer):
+class CreatorSerializer(serializers.ModelSerializer):
     """Marvel Creator DRF serializer"""
     class Meta:
         model = Creator
@@ -36,9 +37,10 @@ class CreatorSerializer(serializers.HyperlinkedModelSerializer):
             'events',
             'seriesList',
             )
+        depth = 1
 
 
-class EventSerializer(serializers.HyperlinkedModelSerializer):
+class EventSerializer(serializers.ModelSerializer):
     """Marvel Event DRF serializer"""
     class Meta:
         model = Event
@@ -55,9 +57,10 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
             'creators',
             'comics',
             )
+        depth = 1
 
 
-class SeriesSerializer(serializers.HyperlinkedModelSerializer):
+class SeriesSerializer(serializers.ModelSerializer):
     """Marvel Series DRF serializer"""
     class Meta:
         model = Series
@@ -74,9 +77,10 @@ class SeriesSerializer(serializers.HyperlinkedModelSerializer):
             'creators',
             'comics',
             )
+        depth = 1
 
 
-class ComicSerializer(serializers.HyperlinkedModelSerializer):
+class ComicSerializer(serializers.ModelSerializer):
     """Marvel Comic DRF serializer"""
     class Meta:
         model = Comic
@@ -95,3 +99,4 @@ class ComicSerializer(serializers.HyperlinkedModelSerializer):
             'characters',
             'events',
             )
+        depth = 1
