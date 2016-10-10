@@ -17,10 +17,10 @@ class Comic(models.Model):
     date = models.DateField(null=True, blank=True)  # dates[0]
     thumbnail = models.ImageField(blank=True)  # thumbnail[0]
     image = models.ImageField(blank=True)  # images[0]
-    seriesList = models.ManyToManyField('Series', through='ComicSeries', blank=True)  # series
-    creators = models.ManyToManyField('Creator', through='CreatorComic', blank=True)  # creators
-    characters = models.ManyToManyField('Character', through='ComicCharacter', blank=True)  # characters
-    events = models.ManyToManyField('Event', through='ComicEvent', blank=True)  # events
+    seriesList = models.ManyToManyField('Series', blank=True)  # series
+    creators = models.ManyToManyField('Creator', through='Role', blank=True)  # creators
+    characters = models.ManyToManyField('Character', blank=True)  # characters
+    events = models.ManyToManyField('Event', blank=True)  # events
 
     def __str__(self):
         return self.title
@@ -38,9 +38,9 @@ class Character(models.Model):
     description = models.TextField(blank=True)  # description
     url = models.URLField(blank=True)  # urls[0]
     thumbnail = models.ImageField(blank=True)  # thumbnail[0]
-    comics = models.ManyToManyField('Comic', through='ComicCharacter', blank=True)  # comics
-    events = models.ManyToManyField('Event', through='CharacterEvent', blank=True)  # events
-    seriesList = models.ManyToManyField('Series', through='CharacterSeries', blank=True)  # series
+    comics = models.ManyToManyField('Comic', blank=True)  # comics
+    events = models.ManyToManyField('Event', blank=True)  # events
+    seriesList = models.ManyToManyField('Series', blank=True)  # series
 
     def __str__(self):
         return self.name
@@ -60,9 +60,9 @@ class Creator(models.Model):
     fullName = models.CharField(max_length=600)  # fullName
     url = models.URLField(blank=True)  # urls[0]
     thumbnail = models.ImageField(blank=True)  # thumbnail[0]
-    comics = models.ManyToManyField('Comic', through='CreatorComic', blank=True)  # comics
-    events = models.ManyToManyField('Event', through='CreatorEvent', blank=True)  # events
-    seriesList = models.ManyToManyField('Series', through='CreatorSeries', blank=True)  # series
+    comics = models.ManyToManyField('Comic', through='Role', blank=True)  # comics
+    events = models.ManyToManyField('Event', blank=True)  # events
+    seriesList = models.ManyToManyField('Series', blank=True)  # series
 
     def __str__(self):
         return self.fullName
@@ -82,10 +82,10 @@ class Series(models.Model):
     startYear = models.PositiveSmallIntegerField(null=True, blank=True)  # startYear
     endYear = models.PositiveSmallIntegerField(null=True, blank=True)  # endYear
     thumbnail = models.ImageField(blank=True)  # thumbnail[0]
-    characters = models.ManyToManyField('Character', through='CharacterSeries', blank=True)  # characters
-    creators = models.ManyToManyField('Creator', through='CreatorSeries', blank=True)  # creators
-    comics = models.ManyToManyField('Comic', through='ComicSeries', blank=True)  # comics
-    events = models.ManyToManyField('Event', through='SeriesEvent', blank=True)  # events
+    characters = models.ManyToManyField('Character', blank=True)  # characters
+    creators = models.ManyToManyField('Creator', blank=True)  # creators
+    comics = models.ManyToManyField('Comic', blank=True)  # comics
+    events = models.ManyToManyField('Event', blank=True)  # events
 
     def __str__(self):
         return self.title
@@ -105,10 +105,10 @@ class Event(models.Model):
     start = models.PositiveSmallIntegerField(null=True, blank=True)  # start
     end = models.PositiveSmallIntegerField(null=True, blank=True)  # end
     thumbnail = models.ImageField(blank=True)  # thumbnail[0]
-    seriesList = models.ManyToManyField('Series', through='SeriesEvent', blank=True)  # series
-    characters = models.ManyToManyField('Character', through='CharacterEvent', blank=True)  # characters
-    creators = models.ManyToManyField('Creator', through='CreatorEvent', blank=True)  # creators
-    comics = models.ManyToManyField('Comic', through='ComicEvent', blank=True)  # comics
+    seriesList = models.ManyToManyField('Series', blank=True)  # series
+    characters = models.ManyToManyField('Character', blank=True)  # characters
+    creators = models.ManyToManyField('Creator', blank=True)  # creators
+    comics = models.ManyToManyField('Comic', blank=True)  # comics
 
     def __str__(self):
         return self.title
@@ -117,47 +117,10 @@ class Event(models.Model):
         ordering = ('title',)
 
 
-class CreatorComic(models.Model):
+class Role(models.Model):
+    """
+    Creator of the Creator in making the Comic
+    """
     creator = models.ForeignKey(Creator, on_delete=models.CASCADE)
     comic = models.ForeignKey(Comic, on_delete=models.CASCADE)
-
-
-class CreatorEvent(models.Model):
-    creator = models.ForeignKey(Creator, on_delete=models.CASCADE)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-
-
-class CreatorSeries(models.Model):
-    creator = models.ForeignKey(Creator, on_delete=models.CASCADE)
-    seriesList = models.ForeignKey(Series, on_delete=models.CASCADE)
-
-
-class SeriesEvent(models.Model):
-    seriesList = models.ForeignKey(Series, on_delete=models.CASCADE)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-
-
-class CharacterEvent(models.Model):
-    character = models.ForeignKey(Character, on_delete=models.CASCADE)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-
-
-class CharacterSeries(models.Model):
-    character = models.ForeignKey(Character, on_delete=models.CASCADE)
-    seriesList = models.ForeignKey(Series, on_delete=models.CASCADE)
-
-
-class ComicEvent(models.Model):
-    comic = models.ForeignKey(Comic, on_delete=models.CASCADE)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-
-
-class ComicSeries(models.Model):
-    comic = models.ForeignKey(Comic, on_delete=models.CASCADE)
-    seriesList = models.ForeignKey(Series, on_delete=models.CASCADE)
-
-
-class ComicCharacter(models.Model):
-    comic = models.ForeignKey(Comic, on_delete=models.CASCADE)
-    character = models.ForeignKey(Character, on_delete=models.CASCADE)
-
+    role = models.CharField(max_length=200)
