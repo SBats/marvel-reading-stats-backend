@@ -1,9 +1,12 @@
+"""
+Marvel resources permissions rules
+"""
 from rest_framework import permissions
 
 
 class IsAccountAdminOrReadOnly(permissions.BasePermission):
     """
-    Object-level permission to only admin.
+    Read only access if not admin.
     """
 
     def has_permission(self, request, view):
@@ -12,5 +15,5 @@ class IsAccountAdminOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        # Instance must have an attribute named `owner`.
+        # Otherwise user must be admin.
         return request.user.is_staff
