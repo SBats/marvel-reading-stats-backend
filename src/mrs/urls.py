@@ -21,7 +21,6 @@ from marvel import views as marvelViews
 
 router = routers.DefaultRouter()
 router.register(r'users', userViews.UserViewSet)
-router.register(r'groups', userViews.GroupViewSet)
 router.register(r'comics', marvelViews.ComicViewSet)
 router.register(r'characters', marvelViews.CharacterViewSet)
 router.register(r'creators', marvelViews.CreatorViewSet)

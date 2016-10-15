@@ -1,20 +1,13 @@
 """Users App Serializers"""
 
-from django.contrib.auth.models import User, Group
+from users.models import MarvelUser
 from rest_framework import serializers
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     """Django users serializer"""
     class Meta:
         """Meta"""
-        model = User
-        fields = ('url', 'username', 'email', 'groups')
-
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    """Django groups serializer"""
-    class Meta:
-        """Meta"""
-        model = Group
-        fields = ('url', 'name')
+        model = MarvelUser
+        fields = ('user', 'level', 'avatar')
+        depth = 1

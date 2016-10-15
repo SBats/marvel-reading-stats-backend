@@ -31,4 +31,4 @@ class IsSelfOrReadOnly(permissions.BasePermission):
             return True
 
         # Otherwise user must be same user or admin.
-        return request.user.is_staff or request.user.id == obj.id
+        return request.user.is_staff or request.user.id == obj.user.id
