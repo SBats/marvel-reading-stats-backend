@@ -1,13 +1,18 @@
-"""Users App Serializers"""
-
+from django.contrib.auth.models import User
 from users.models import MarvelUser
 from rest_framework import serializers
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """Django users serializer"""
+
     class Meta:
-        """Meta"""
+        model = User
+        fields = ('id', 'username', 'date_joined')
+
+
+class MarvelUserSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
         model = MarvelUser
         fields = ('user', 'level', 'avatar')
-        depth = 1
