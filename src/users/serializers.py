@@ -15,4 +15,4 @@ class MarvelUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MarvelUser
-        fields = ('user', 'level', 'avatar')
+        fields = ('id', 'user', 'level', 'avatar')
