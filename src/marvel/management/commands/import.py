@@ -17,6 +17,14 @@ from marvel.models import (
 class Command(BaseCommand):
     help = 'Import marvel data from endpoint'
     base_url = 'http://gateway.marvel.com:80/v1/public/'
+    MAX_RETRIES = 20
+
+    def init_connexion(self):
+        session = requests.Session()
+        adapter = requests.adapters.HTTPAdapter(max_retries=self.MAX_RETRIES)
+        session.mount('https://', adapter)
+        session.mount('http://', adapter)
+        return session
 
     def add_arguments(self, parser):
         parser.add_argument('public_key')
@@ -36,7 +44,7 @@ class Command(BaseCommand):
             parameters += '&{key}={value}'.format(key=k, value=v)
 
         url += parameters
-        r = requests.get(url)
+        r = self.session.get(url)
         return r.json()
 
     def get_full_resource(self, resource):
@@ -466,6 +474,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.private_key = options['private_key']
         self.public_key = options['public_key']
+        self.session = self.init_connexion()
 
         self.update_comics()
         self.update_events()
