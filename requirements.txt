@@ -12,4 +12,5 @@ pyflakes==1.2.3
 pylint==1.6.4
 requests==2.11.1
 six==1.10.0
+tqdm==4.8.4
 wrapt==1.10.8
