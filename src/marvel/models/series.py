@@ -2,12 +2,12 @@ from django.db import models
 
 
 class Series(models.Model):
-    marvelId = models.IntegerField()
+    marvel_id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     url = models.URLField(blank=True)
-    startYear = models.PositiveSmallIntegerField(null=True, blank=True)
-    endYear = models.PositiveSmallIntegerField(null=True, blank=True)
+    start_year = models.PositiveSmallIntegerField(null=True, blank=True)
+    end_year = models.PositiveSmallIntegerField(null=True, blank=True)
     thumbnail = models.ImageField(blank=True)
     characters = models.ManyToManyField('Character', blank=True)
     creators = models.ManyToManyField('Creator', blank=True)
