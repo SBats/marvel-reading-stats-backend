@@ -61,11 +61,11 @@ class Command(BaseCommand):
 
     def get_full_resource(self, resource):
         first_call = self.get_resource(resource, {'limit': 100})
-        total = first_call['data']['total']
-        count = first_call['data']['count']
+        total = first_call.get('data').get('total')
+        count = first_call.get('data').get('count')
         iterations_needed = int(math.ceil(float(total)/float(count)))
         data = []
-        data.extend(first_call['data']['results'])
+        data.extend(first_call.get('data').get('results'))
 
         for i in range(1, iterations_needed):
             self.q.put([
@@ -73,7 +73,7 @@ class Command(BaseCommand):
                     self.get_resource(
                         resource,
                         {'limit': 100, 'offset': 100 * x}
-                    )['data']['results']
+                    ).get('data').get('results')
                 ),
                 i
             ])
@@ -85,34 +85,34 @@ class Command(BaseCommand):
     def update_a_comic(self, resource):
         self.stdout.write(
             'Adding comic {comic_id} to db'.format(
-                comic_id=resource['id']
+                comic_id=resource.get('id')
             )
         )
         comic, created = Comic.objects.get_or_create(
-            marvel_id=resource['id']
+            marvel_id=resource.get('id')
         )
-        comic.title = resource['title']
-        comic.variant_description = resource['variantDescription']
-        comic.description = resource['description']
-        comic.page_count = resource['pageCount']
-        comic.url = resource['urls'][0]['url']
-        comic.date = resource['dates'][0]['date']
+        comic.title = resource.get('title')
+        comic.variant_description = resource.get('variantDescription')
+        comic.description = resource.get('description')
+        comic.page_count = resource.get('pageCount')
+        comic.url = resource.get('urls')[0].get('url') if resource.get('urls')[0] else ''
+        comic.date = resource.get('dates')[0].get('date') if resource.get('dates')[0] else None
         comic.thumbnail = (
-            resource['thumbnail']['path']
+            resource.get('thumbnail').get('path')
             + '/portrait_uncanny.'
-            + resource['thumbnail']['extension']
+            + resource.get('thumbnail').get('extension')
         )
-        if len(resource['images']) > 0:
+        if len(resource.get('images')) > 0:
             comic.image = (
-                resource['images'][0]['path']
+                resource.get('images')[0].get('path')
                 + '/portrait_uncanny.'
-                + resource['images'][0]['extension']
+                + resource.get('images')[0].get('extension')
             )
 
-        series_id = resource['series']['resourceURI'].rsplit('/', 1)[-1]
+        series_id = resource.get('series').get('resourceURI').rsplit('/', 1)[-1]
         series, created = Series.objects.get_or_create(
             marvel_id=series_id,
-            defaults={'title': resource['series']['name']},
+            defaults={'title': resource.get('series').get('name')},
         )
         linked_series = comic.series_list.values_list(
             'marvel_id',
@@ -121,28 +121,28 @@ class Command(BaseCommand):
         if int(series_id) not in linked_series:
             comic.series_list.add(series_id)
 
-        creators_list = resource['creators']['items']
+        creators_list = resource.get('creators').get('items')
         for creator_infos in creators_list:
-            creator_id = creator_infos['resourceURI'].rsplit('/', 1)[-1]
+            creator_id = creator_infos.get('resourceURI').rsplit('/', 1)[-1]
             creator, created = Creator.objects.get_or_create(
                 marvel_id=creator_id,
-                defaults={'full_name': creator_infos['name']},
+                defaults={'full_name': creator_infos.get('name')},
             )
             relation = ''
             if 'role' in creator_infos:
-                relation = creator_infos['role']
+                relation = creator_infos.get('role')
             role, role_create = Role.objects.get_or_create(
                 creator=creator,
                 comic=comic,
                 defaults={'role': relation}
             )
 
-        characters_list = resource['characters']['items']
+        characters_list = resource.get('characters').get('items')
         for character_infos in characters_list:
-            character_id = character_infos['resourceURI'].rsplit('/', 1)[-1]
+            character_id = character_infos.get('resourceURI').rsplit('/', 1)[-1]
             character, created = Character.objects.get_or_create(
                 marvel_id=character_id,
-                defaults={'name': character_infos['name']},
+                defaults={'name': character_infos.get('name')},
             )
             linked_characters = comic.characters.values_list(
                 'marvel_id',
@@ -151,12 +151,12 @@ class Command(BaseCommand):
             if int(character_id) not in linked_characters:
                 comic.characters.add(character_id)
 
-        events_list = resource['events']['items']
+        events_list = resource.get('events').get('items')
         for event_infos in events_list:
-            event_id = event_infos['resourceURI'].rsplit('/', 1)[-1]
+            event_id = event_infos.get('resourceURI').rsplit('/', 1)[-1]
             event, created = Event.objects.get_or_create(
                 marvel_id=event_id,
-                default={'title': event_infos['title']},
+                default={'title': event_infos.get('title')},
             )
             linked_events = comic.events.values_list(
                 'marvel_id',
@@ -170,29 +170,29 @@ class Command(BaseCommand):
     def update_an_event(self, resource):
         self.stdout.write(
             'Adding event {event_id} to db'.format(
-                event_id=resource['id']
+                event_id=resource.get('id')
             )
         )
         event, created = Event.objects.get_or_create(
-            marvel_id=resource['id']
+            marvel_id=resource.get('id')
         )
-        event.title = resource['title']
-        event.description = resource['description']
-        event.url = resource['urls'][0]['url']
-        event.start = resource['start']
-        event.end = resource['end']
+        event.title = resource.get('title')
+        event.description = resource.get('description')
+        event.url = resource.get('urls')[0].get('url') if resource.get('urls')[0] else ''
+        event.start = resource.get('start')
+        event.end = resource.get('end')
         event.thumbnail = (
-            resource['thumbnail']['path']
+            resource.get('thumbnail').get('path')
             + '/portrait_uncanny.'
-            + resource['thumbnail']['extension']
+            + resource.get('thumbnail').get('extension')
         )
 
-        series_list = resource['series']['items']
+        series_list = resource.get('series').get('items')
         for series_infos in series_list:
-            series_id = series_infos['resourceURI'].rsplit('/', 1)[-1]
+            series_id = series_infos.get('resourceURI').rsplit('/', 1)[-1]
             series, created = Series.objects.get_or_create(
                 marvel_id=series_id,
-                defaults={'title': series_infos['name']},
+                defaults={'title': series_infos.get('name')},
             )
             linked_series = event.series_list.values_list(
                 'marvel_id',
@@ -201,12 +201,12 @@ class Command(BaseCommand):
             if int(series_id) not in linked_series:
                 event.series_list.add(series_id)
 
-        creators_list = resource['creators']['items']
+        creators_list = resource.get('creators').get('items')
         for creator_infos in creators_list:
-            creator_id = creator_infos['resourceURI'].rsplit('/', 1)[-1]
+            creator_id = creator_infos.get('resourceURI').rsplit('/', 1)[-1]
             creator, created = Creator.objects.get_or_create(
                 marvel_id=creator_id,
-                defaults={'full_name': creator_infos['name']},
+                defaults={'full_name': creator_infos.get('name')},
             )
             linked_creators = event.creators.values_list(
                 'marvel_id',
@@ -215,12 +215,12 @@ class Command(BaseCommand):
             if int(creator_id) not in linked_creators:
                 event.creators.add(creator_id)
 
-        characters_list = resource['characters']['items']
+        characters_list = resource.get('characters').get('items')
         for character_infos in characters_list:
-            character_id = character_infos['resourceURI'].rsplit('/', 1)[-1]
+            character_id = character_infos.get('resourceURI').rsplit('/', 1)[-1]
             character, created = Character.objects.get_or_create(
                 marvel_id=character_id,
-                defaults={'name': character_infos['name']},
+                defaults={'name': character_infos.get('name')},
             )
             linked_characters = event.characters.values_list(
                 'marvel_id',
@@ -229,12 +229,12 @@ class Command(BaseCommand):
             if int(character_id) not in linked_characters:
                 event.characters.add(character_id)
 
-        comics_list = resource['comics']['items']
+        comics_list = resource.get('comics').get('items')
         for comic_infos in comics_list:
-            comic_id = comic_infos['resourceURI'].rsplit('/', 1)[-1]
+            comic_id = comic_infos.get('resourceURI').rsplit('/', 1)[-1]
             comic, created = Comic.objects.get_or_create(
                 marvel_id=comic_id,
-                defaults={'title': comic_infos['name']},
+                defaults={'title': comic_infos.get('name')},
             )
             linked_comics = event.comics.values_list(
                 'marvel_id',
@@ -248,29 +248,29 @@ class Command(BaseCommand):
     def update_a_series(self, resource):
         self.stdout.write(
             'Adding series {series_id} to db'.format(
-                series_id=resource['id']
+                series_id=resource.get('id')
             )
         )
         series, created = Series.objects.get_or_create(
-            marvel_id=resource['id']
+            marvel_id=resource.get('id')
         )
-        series.title = resource['title']
-        series.description = resource['description']
-        series.url = resource['urls'][0]['url']
-        series.start_year = resource['startYear']
-        series.end_year = resource['endYear']
+        series.title = resource.get('title')
+        series.description = resource.get('description')
+        series.url = resource.get('urls')[0].get('url') if resource.get('urls')[0] else ''
+        series.start_year = resource.get('startYear')
+        series.end_year = resource.get('endYear')
         series.thumbnail = (
-            resource['thumbnail']['path']
+            resource.get('thumbnail').get('path')
             + '/portrait_uncanny.'
-            + resource['thumbnail']['extension']
+            + resource.get('thumbnail').get('extension')
         )
 
-        creators_list = resource['creators']['items']
+        creators_list = resource.get('creators').get('items')
         for creator_infos in creators_list:
-            creator_id = creator_infos['resourceURI'].rsplit('/', 1)[-1]
+            creator_id = creator_infos.get('resourceURI').rsplit('/', 1)[-1]
             creator, created = Creator.objects.get_or_create(
                 marvel_id=creator_id,
-                defaults={'full_name': creator_infos['name']},
+                defaults={'full_name': creator_infos.get('name')},
             )
             linked_creators = series.creators.values_list(
                 'marvel_id',
@@ -279,12 +279,12 @@ class Command(BaseCommand):
             if int(creator_id) not in linked_creators:
                 series.creators.add(creator_id)
 
-        characters_list = resource['characters']['items']
+        characters_list = resource.get('characters').get('items')
         for character_infos in characters_list:
-            character_id = character_infos['resourceURI'].rsplit('/', 1)[-1]
+            character_id = character_infos.get('resourceURI').rsplit('/', 1)[-1]
             character, created = Character.objects.get_or_create(
                 marvel_id=character_id,
-                defaults={'name': character_infos['name']},
+                defaults={'name': character_infos.get('name')},
             )
             linked_characters = series.characters.values_list(
                 'marvel_id',
@@ -293,12 +293,12 @@ class Command(BaseCommand):
             if int(character_id) not in linked_characters:
                 series.characters.add(character_id)
 
-        events_list = resource['events']['items']
+        events_list = resource.get('events').get('items')
         for event_infos in events_list:
-            event_id = event_infos['resourceURI'].rsplit('/', 1)[-1]
+            event_id = event_infos.get('resourceURI').rsplit('/', 1)[-1]
             event, created = Event.objects.get_or_create(
                 marvel_id=event_id,
-                defaults={'name': event_infos['name']},
+                defaults={'name': event_infos.get('name')},
             )
             linked_events = series.events.values_list(
                 'marvel_id',
@@ -307,12 +307,12 @@ class Command(BaseCommand):
             if int(event_id) not in linked_events:
                 series.events.add(event_id)
 
-        comics_list = resource['comics']['items']
+        comics_list = resource.get('comics').get('items')
         for comic_infos in comics_list:
-            comic_id = comic_infos['resourceURI'].rsplit('/', 1)[-1]
+            comic_id = comic_infos.get('resourceURI').rsplit('/', 1)[-1]
             comic, created = Comic.objects.get_or_create(
                 marvel_id=comic_id,
-                defaults={'title': comic_infos['name']},
+                defaults={'title': comic_infos.get('name')},
             )
             linked_comics = series.comics.values_list(
                 'marvel_id',
@@ -326,29 +326,29 @@ class Command(BaseCommand):
     def update_a_creator(self, resource):
         self.stdout.write(
             'Adding creator {creator_id} to db'.format(
-                creator_id=resource['id']
+                creator_id=resource.get('id')
             )
         )
         creator, created = Creator.objects.get_or_create(
-            marvel_id=resource['id']
+            marvel_id=resource.get('id')
         )
-        creator.first_name = resource['firstName']
-        creator.last_name = resource['lastName']
-        creator.suffix = resource['suffix']
-        creator.full_name = resource['fullName']
-        creator.url = resource['urls'][0]['url']
+        creator.first_name = resource.get('firstName')
+        creator.last_name = resource.get('lastName')
+        creator.suffix = resource.get('suffix')
+        creator.full_name = resource.get('fullName')
+        creator.url = resource.get('urls')[0].get('url')
         creator.thumbnail = (
-            resource['thumbnail']['path']
+            resource.get('thumbnail').get('path')
             + '/portrait_uncanny.'
-            + resource['thumbnail']['extension']
+            + resource.get('thumbnail').get('extension')
         )
 
-        series_list = resource['series']['items']
+        series_list = resource.get('series').get('items')
         for series_infos in series_list:
-            series_id = series_infos['resourceURI'].rsplit('/', 1)[-1]
+            series_id = series_infos.get('resourceURI').rsplit('/', 1)[-1]
             series, created = Series.objects.get_or_create(
                 marvel_id=series_id,
-                defaults={'title': series_infos['name']},
+                defaults={'title': series_infos.get('name')},
             )
             linked_series = creator.series_list.values_list(
                 'marvel_id',
@@ -357,28 +357,28 @@ class Command(BaseCommand):
             if int(series_id) not in linked_series:
                 creator.series_list.add(series_id)
 
-        comics_list = resource['comics']['items']
+        comics_list = resource.get('comics').get('items')
         for comic_infos in comics_list:
-            comic_id = comic_infos['resourceURI'].rsplit('/', 1)[-1]
+            comic_id = comic_infos.get('resourceURI').rsplit('/', 1)[-1]
             comic, created = Comic.objects.get_or_create(
                 marvel_id=comic_id,
-                defaults={'title': comic_infos['name']},
+                defaults={'title': comic_infos.get('name')},
             )
             relation = ''
             if 'role' in comic_infos:
-                relation = comic_infos['role']
+                relation = comic_infos.get('role')
             role, role_create = Role.objects.get_or_create(
                 creator=creator,
                 comic=comic,
                 defaults={'role': relation}
             )
 
-        events_list = resource['events']['items']
+        events_list = resource.get('events').get('items')
         for event_infos in events_list:
-            event_id = event_infos['resourceURI'].rsplit('/', 1)[-1]
+            event_id = event_infos.get('resourceURI').rsplit('/', 1)[-1]
             event_title = ''
             if 'title' in event_infos:
-                event_title = event_infos['title']
+                event_title = event_infos.get('title')
             event, created = Event.objects.get_or_create(
                 marvel_id=event_id,
                 defaults={'title': event_title},
@@ -395,27 +395,27 @@ class Command(BaseCommand):
     def update_a_character(self, resource):
         self.stdout.write(
             'Adding character {character_id} to db'.format(
-                character_id=resource['id']
+                character_id=resource.get('id')
             )
         )
         character, created = Character.objects.get_or_create(
-            marvel_id=resource['id']
+            marvel_id=resource.get('id')
         )
-        character.name = resource['name']
-        character.description = resource['description']
-        character.url = resource['urls'][0]['url']
+        character.name = resource.get('name')
+        character.description = resource.get('description')
+        character.url = resource.get('urls')[0].get('url') if resource.get('urls')[0] else ''
         character.thumbnail = (
-            resource['thumbnail']['path']
+            resource.get('thumbnail').get('path')
             + '/portrait_uncanny.'
-            + resource['thumbnail']['extension']
+            + resource.get('thumbnail').get('extension')
         )
 
-        series_list = resource['series']['items']
+        series_list = resource.get('series').get('items')
         for series_infos in series_list:
-            series_id = series_infos['resourceURI'].rsplit('/', 1)[-1]
+            series_id = series_infos.get('resourceURI').rsplit('/', 1)[-1]
             series, created = Series.objects.get_or_create(
                 marvel_id=series_id,
-                defaults={'title': series_infos['name']},
+                defaults={'title': series_infos.get('name')},
             )
             linked_series = character.series_list.values_list(
                 'marvel_id',
@@ -424,12 +424,12 @@ class Command(BaseCommand):
             if int(series_id) not in linked_series:
                 character.series_list.add(series_id)
 
-        events_list = resource['events']['items']
+        events_list = resource.get('events').get('items')
         for event_infos in events_list:
-            event_id = event_infos['resourceURI'].rsplit('/', 1)[-1]
+            event_id = event_infos.get('resourceURI').rsplit('/', 1)[-1]
             event, created = Event.objects.get_or_create(
                 marvel_id=event_id,
-                defaults={'title': event_infos['name']},
+                defaults={'title': event_infos.get('name')},
             )
             linked_events = character.events.values_list(
                 'marvel_id',
@@ -438,12 +438,12 @@ class Command(BaseCommand):
             if int(event_id) not in linked_events:
                 character.events.add(event_id)
 
-        comics_list = resource['comics']['items']
+        comics_list = resource.get('comics').get('items')
         for comic_infos in comics_list:
-            comic_id = comic_infos['resourceURI'].rsplit('/', 1)[-1]
+            comic_id = comic_infos.get('resourceURI').rsplit('/', 1)[-1]
             comic, created = Comic.objects.get_or_create(
                 marvel_id=comic_id,
-                defaults={'title': comic_infos['name']},
+                defaults={'title': comic_infos.get('name')},
             )
             linked_comics = character.comics.values_list(
                 'marvel_id',
@@ -472,8 +472,8 @@ class Command(BaseCommand):
         self.stdout.write('Finished {name} import'.format(name=name))
 
     def handle(self, *args, **options):
-        self.private_key = options['private_key']
-        self.public_key = options['public_key']
+        self.private_key = options.get('private_key')
+        self.public_key = options.get('public_key')
         self.session = self.init_connexion()
 
         for i in range(self.MAX_THREADS):
@@ -482,9 +482,9 @@ class Command(BaseCommand):
             self.threads.append(t)
 
         resources = [
-            {'name': 'Comics', 'endpoint': 'comics', 'method': self.update_a_comic},
+            # {'name': 'Comics', 'endpoint': 'comics', 'method': self.update_a_comic},
             {'name': 'Events', 'endpoint': 'events', 'method': self.update_an_event},
-            {'name': 'Creators', 'endpoint': 'creators', 'method': self.update_a_creator},
+            # {'name': 'Creators', 'endpoint': 'creators', 'method': self.update_a_creator},
             {'name': 'Series', 'endpoint': 'series', 'method': self.update_a_series},
             {'name': 'Characters', 'endpoint': 'characters', 'method': self.update_a_character},
         ]
