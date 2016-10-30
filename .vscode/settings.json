@@ -1,6 +1,7 @@
 // Placez vos paramètres dans ce fichier pour remplacer les paramètres par défaut et les paramètres utilisateur.
 {
   "editor.tabSize": 4,
+  "python.linting.pylintEnabled": false,
   "python.linting.flake8Enabled": true,
   "python.linting.lintOnTextChange": true,
   "python.linting.lintOnSave": true,
