@@ -156,7 +156,7 @@ class Command(BaseCommand):
             event_id = event_infos.get('resourceURI').rsplit('/', 1)[-1]
             event, created = Event.objects.get_or_create(
                 marvel_id=event_id,
-                default={'title': event_infos.get('title')},
+                defaults={'title': event_infos.get('title')},
             )
             linked_events = comic.events.values_list(
                 'marvel_id',
