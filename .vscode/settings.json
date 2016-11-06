@@ -5,8 +5,8 @@
   "python.linting.flake8Enabled": true,
   "python.linting.lintOnTextChange": true,
   "python.linting.lintOnSave": true,
-  "python.pythonPath": "/home/batsman/Works/marvel/backend/dev/venv/bin/python",
+  "python.pythonPath": "/Users/admin/Works/marvel-reading-stats/backend/dev/venv/bin/python",
   "python.autoComplete.extraPaths": [
-    "/home/batsman/Works/marvel/backend/dev/venv/lib/python3.5/site-packages"
+    "/Users/admin/Works/marvel-reading-stats/backend/dev/venv/lib/python3.5/site-packages"
   ]
 }

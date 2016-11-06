@@ -128,6 +128,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Medias
+
+MEDIA_ROOT = '/Users/admin/Works/marvel-reading-stats/backend/dev/media/'
+
+MEDIA_URL = '/media/'
+
+
 # Django Rest Framework Config
 
 REST_FRAMEWORK = {
