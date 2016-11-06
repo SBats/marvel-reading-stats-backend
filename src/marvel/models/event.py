@@ -8,7 +8,7 @@ class Event(models.Model):
     url = models.TextField(null=True, blank=True)
     start = models.DateTimeField(null=True, blank=True)
     end = models.DateTimeField(null=True, blank=True)
-    thumbnail = models.ImageField(null=True, blank=True)
+    image = models.ForeignKey('MarvelImage', null=True, blank=True)
     series_list = models.ManyToManyField('Series', blank=True)
     characters = models.ManyToManyField('Character', blank=True)
     creators = models.ManyToManyField('Creator', blank=True)

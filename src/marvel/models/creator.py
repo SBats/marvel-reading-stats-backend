@@ -8,7 +8,7 @@ class Creator(models.Model):
     suffix = models.CharField(null=True, max_length=200, blank=True)
     full_name = models.CharField(null=True, max_length=600)
     url = models.TextField(null=True, blank=True)
-    thumbnail = models.ImageField(null=True, blank=True)
+    image = models.ForeignKey('MarvelImage', null=True, blank=True)
     comics = models.ManyToManyField('Comic', through='Role', blank=True)
     events = models.ManyToManyField('Event', blank=True)
     series_list = models.ManyToManyField('Series', blank=True)

@@ -6,7 +6,7 @@ class Character(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     url = models.TextField(null=True, blank=True)
-    thumbnail = models.ImageField(null=True, blank=True)
+    image = models.ForeignKey('MarvelImage', null=True, blank=True)
     comics = models.ManyToManyField('Comic', blank=True)
     events = models.ManyToManyField('Event', blank=True)
     series_list = models.ManyToManyField('Series', blank=True)

@@ -12,6 +12,7 @@ from marvel.models import (
     Series,
     Character,
     Role,
+    MarvelImage
 )
 
 
@@ -97,17 +98,11 @@ class Command(BaseCommand):
         comic.page_count = resource.get('pageCount')
         comic.url = resource.get('urls')[0].get('url') if resource.get('urls')[0] else ''
         comic.date = resource.get('dates')[0].get('date') if resource.get('dates')[0] else None
-        comic.thumbnail = (
-            resource.get('thumbnail').get('path')
-            + '/portrait_uncanny.'
-            + resource.get('thumbnail').get('extension')
+        new_image, created = MarvelImage.objects.get_or_create(
+            path=resource.get('thumbnail').get('path'),
+            extension=resource.get('thumbnail').get('extension')
         )
-        if len(resource.get('images')) > 0:
-            comic.image = (
-                resource.get('images')[0].get('path')
-                + '/portrait_uncanny.'
-                + resource.get('images')[0].get('extension')
-            )
+        comic.image = new_image
 
         series_id = resource.get('series').get('resourceURI').rsplit('/', 1)[-1]
         series, created = Series.objects.get_or_create(
@@ -181,11 +176,11 @@ class Command(BaseCommand):
         event.url = resource.get('urls')[0].get('url') if resource.get('urls')[0] else ''
         event.start = resource.get('start')
         event.end = resource.get('end')
-        event.thumbnail = (
-            resource.get('thumbnail').get('path')
-            + '/portrait_uncanny.'
-            + resource.get('thumbnail').get('extension')
+        new_image, created = MarvelImage.objects.get_or_create(
+            path=resource.get('thumbnail').get('path'),
+            extension=resource.get('thumbnail').get('extension')
         )
+        event.image = new_image
 
         series_list = resource.get('series').get('items')
         for series_infos in series_list:
@@ -259,11 +254,11 @@ class Command(BaseCommand):
         series.url = resource.get('urls')[0].get('url') if resource.get('urls')[0] else ''
         series.start_year = resource.get('startYear')
         series.end_year = resource.get('endYear')
-        series.thumbnail = (
-            resource.get('thumbnail').get('path')
-            + '/portrait_uncanny.'
-            + resource.get('thumbnail').get('extension')
+        new_image, created = MarvelImage.objects.get_or_create(
+            path=resource.get('thumbnail').get('path'),
+            extension=resource.get('thumbnail').get('extension')
         )
+        series.image = new_image
 
         creators_list = resource.get('creators').get('items')
         for creator_infos in creators_list:
@@ -337,11 +332,11 @@ class Command(BaseCommand):
         creator.suffix = resource.get('suffix')
         creator.full_name = resource.get('fullName')
         creator.url = resource.get('urls')[0].get('url')
-        creator.thumbnail = (
-            resource.get('thumbnail').get('path')
-            + '/portrait_uncanny.'
-            + resource.get('thumbnail').get('extension')
+        new_image, created = MarvelImage.objects.get_or_create(
+            path=resource.get('thumbnail').get('path'),
+            extension=resource.get('thumbnail').get('extension')
         )
+        creator.image = new_image
 
         series_list = resource.get('series').get('items')
         for series_infos in series_list:
@@ -404,11 +399,11 @@ class Command(BaseCommand):
         character.name = resource.get('name')
         character.description = resource.get('description')
         character.url = resource.get('urls')[0].get('url') if resource.get('urls')[0] else ''
-        character.thumbnail = (
-            resource.get('thumbnail').get('path')
-            + '/portrait_uncanny.'
-            + resource.get('thumbnail').get('extension')
+        new_image, created = MarvelImage.objects.get_or_create(
+            path=resource.get('thumbnail').get('path'),
+            extension=resource.get('thumbnail').get('extension')
         )
+        character.image = new_image
 
         series_list = resource.get('series').get('items')
         for series_infos in series_list:
@@ -485,8 +480,8 @@ class Command(BaseCommand):
             # {'name': 'Comics', 'endpoint': 'comics', 'method': self.update_a_comic},
             {'name': 'Events', 'endpoint': 'events', 'method': self.update_an_event},
             # {'name': 'Creators', 'endpoint': 'creators', 'method': self.update_a_creator},
-            {'name': 'Series', 'endpoint': 'series', 'method': self.update_a_series},
-            {'name': 'Characters', 'endpoint': 'characters', 'method': self.update_a_character},
+            # {'name': 'Series', 'endpoint': 'series', 'method': self.update_a_series},
+            # {'name': 'Characters', 'endpoint': 'characters', 'method': self.update_a_character},
         ]
         for resource in resources:
             self.update_resource_by_type(

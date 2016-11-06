@@ -8,7 +8,7 @@ class Series(models.Model):
     url = models.TextField(null=True, blank=True)
     start_year = models.PositiveSmallIntegerField(null=True, blank=True)
     end_year = models.PositiveSmallIntegerField(null=True, blank=True)
-    thumbnail = models.ImageField(null=True, blank=True)
+    image = models.ForeignKey('MarvelImage', null=True, blank=True)
     characters = models.ManyToManyField('Character', blank=True)
     creators = models.ManyToManyField('Creator', blank=True)
     comics = models.ManyToManyField('Comic', blank=True)
