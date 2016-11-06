@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
-from users.models import MarvelUser
+from users.models import MarvelUser, Avatar
 
 
 class MarvelUserInline(admin.StackedInline):
@@ -23,8 +23,8 @@ class UserAdmin(BaseUserAdmin):
     """
     Define a new User admin
     """
-    inlines = (MarvelUserInline, )
-
+    inlines = (MarvelUserInline,)
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+admin.site.register(Avatar)
