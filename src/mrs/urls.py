@@ -18,6 +18,7 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from rest_framework import routers
+from rest_framework.authtoken import views
 from users import views as userViews
 from marvel import views as marvelViews
 
@@ -31,9 +32,7 @@ router.register(r'series', marvelViews.SeriesViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
-    url(r'api-auth', include(
-        'rest_framework.urls',
-        namespace='rest_framework')),
+    url(r'^api-token-auth/', views.obtain_auth_token),
     url(r'^admin/', admin.site.urls),
 ] + static(
     settings.STATIC_URL, document_root=settings.STATIC_ROOT
