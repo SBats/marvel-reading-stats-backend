@@ -9,14 +9,14 @@ class CharacterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Character
         fields = (
-            'marvelId',
+            'marvel_id',
             'name',
             'description',
             'url',
-            'thumbnail',
+            'image',
             'comics',
             'events',
-            'seriesList',
+            'series_list',
             )
         depth = 1
 
@@ -26,16 +26,16 @@ class CreatorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Creator
         fields = (
-            'marvelId',
-            'firstName',
-            'lastName',
+            'marvel_id',
+            'first_name',
+            'last_name',
             'suffix',
-            'fullName',
+            'full_name',
             'url',
-            'thumbnail',
+            'image',
             'comics',
             'events',
-            'seriesList',
+            'series_list',
             )
         depth = 1
 
@@ -45,14 +45,14 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = (
-            'marvelId',
+            'marvel_id',
             'title',
             'description',
             'url',
             'start',
             'end',
-            'thumbnail',
-            'seriesList',
+            'image',
+            'series_list',
             'characters',
             'creators',
             'comics',
@@ -65,13 +65,13 @@ class SeriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Series
         fields = (
-            'marvelId',
+            'marvel_id',
             'title',
             'description',
             'url',
-            'startYear',
-            'endYear',
-            'thumbnail',
+            'start_year',
+            'end_year',
+            'image',
             'events',
             'characters',
             'creators',
@@ -85,16 +85,16 @@ class ComicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comic
         fields = (
-            'marvelId',
+            'marvel_id',
             'title',
-            'variantDescription',
+            'variant_description',
             'description',
-            'pageCount',
+            'page_count',
             'url',
             'date',
-            'thumbnail',
             'image',
-            'seriesList',
+            'image',
+            'series_list',
             'creators',
             'characters',
             'events',
