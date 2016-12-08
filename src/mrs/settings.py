@@ -81,10 +81,9 @@ WSGI_APPLICATION = 'mrs.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mrsdb',
-        'USER': 'mrsuser',
-        'PASSWORD': 'mrspwd',
-        'HOST': '127.0.0.1',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'HOST': 'localhost',
         'PORT': '5432'
     }
 }

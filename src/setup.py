@@ -1,0 +1,25 @@
+from distutils.core import setup
+setup(
+    name="MRS",
+    version='2.0.0',
+    description="Who will be the best marvel reader ?",
+    author='Simon Bats',
+    install_requires=[
+        'astroid==1.4.8',
+        'Django==1.10.2',
+        'djangorestframework==3.4.7',
+        'flake8==3.0.4',
+        'isort==4.2.5',
+        'lazy-object-proxy==1.2.2',
+        'mccabe==0.5.2',
+        'Pillow==3.4.1',
+        'psycopg2==2.6.2',
+        'pycodestyle==2.0.0',
+        'pyflakes==1.2.3',
+        'pylint==1.6.4',
+        'requests==2.11.1',
+        'six==1.10.0',
+        'tqdm==4.8.4',
+        'wrapt==1.10.8',
+    ],
+)

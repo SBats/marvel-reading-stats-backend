@@ -1,4 +1,6 @@
-venv
+/env/
+src/**/__pycache__
+src/MRS.egg-info/
 *.pyc
 !.gitkeep
 media
