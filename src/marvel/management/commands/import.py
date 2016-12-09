@@ -20,7 +20,8 @@ class Command(BaseCommand):
     help = 'Import marvel data from endpoint'
     BASE_URL = 'http://gateway.marvel.com:80/v1/public/'
     MAX_RETRIES = 20
-    MAX_THREADS = 8
+    MAX_THREADS = 2
+    TIMEOUT = 1200
     q = queue.Queue()
     threads = []
 
@@ -34,7 +35,11 @@ class Command(BaseCommand):
 
     def init_connexion(self):
         session = requests.Session()
-        adapter = requests.adapters.HTTPAdapter(max_retries=self.MAX_RETRIES)
+        adapter = requests.adapters.HTTPAdapter(
+            pool_connections=10,
+            pool_maxsize=10,
+            max_retries=self.MAX_RETRIES
+        )
         session.mount('https://', adapter)
         session.mount('http://', adapter)
         return session
@@ -57,8 +62,16 @@ class Command(BaseCommand):
             parameters += '&{key}={value}'.format(key=k, value=v)
 
         url += parameters
-        r = self.session.get(url)
-        return r.json()
+        r = self.session.get(url, timeout=self.TIMEOUT)
+
+        self.stdout.write('{url} -> {status}'.format(
+            url=url,
+            status=r.status_code
+        ))
+        if (r.status_code != 200):
+            return self.get_resource(resource, options)
+        else:
+            return r.json()
 
     def get_full_resource(self, resource):
         first_call = self.get_resource(resource, {'limit': 100})
@@ -477,11 +490,11 @@ class Command(BaseCommand):
             self.threads.append(t)
 
         resources = [
-            # {'name': 'Comics', 'endpoint': 'comics', 'method': self.update_a_comic},
+            {'name': 'Comics', 'endpoint': 'comics', 'method': self.update_a_comic},
             {'name': 'Events', 'endpoint': 'events', 'method': self.update_an_event},
-            # {'name': 'Creators', 'endpoint': 'creators', 'method': self.update_a_creator},
-            # {'name': 'Series', 'endpoint': 'series', 'method': self.update_a_series},
-            # {'name': 'Characters', 'endpoint': 'characters', 'method': self.update_a_character},
+            {'name': 'Creators', 'endpoint': 'creators', 'method': self.update_a_creator},
+            {'name': 'Series', 'endpoint': 'series', 'method': self.update_a_series},
+            {'name': 'Characters', 'endpoint': 'characters', 'method': self.update_a_character},
         ]
         for resource in resources:
             self.update_resource_by_type(
