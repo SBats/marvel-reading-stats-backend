@@ -4,3 +4,4 @@ src/MRS.egg-info/
 *.pyc
 !.gitkeep
 media
+.vscode
