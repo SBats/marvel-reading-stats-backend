@@ -128,6 +128,7 @@ class ComicSerializer(serializers.ModelSerializer):
             'marvel_id',
             'title',
             'variant_description',
+            'issue_number',
             'description',
             'page_count',
             'url',

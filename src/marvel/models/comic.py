@@ -6,6 +6,7 @@ class Comic(models.Model):
     title = models.CharField(db_index=True, max_length=200)
     variant_description = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    issue_number = models.PositiveSmallIntegerField(null=True, blank=True)
     page_count = models.PositiveSmallIntegerField(default=0, blank=True)
     url = models.TextField(null=True, blank=True)
     date = models.DateTimeField(null=True, blank=True)

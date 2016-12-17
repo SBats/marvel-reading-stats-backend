@@ -64,6 +64,7 @@ def update_a_comic(resource):
     comic.variant_description = resource.get('variantDescription')
     comic.description = resource.get('description')
     comic.page_count = resource.get('pageCount')
+    comic.issue_number = resource.get('issueNumber')
     comic.url = resource.get('urls')[0].get('url') if resource.get('urls')[0] else ''
     comic.date = resource.get('dates')[0].get('date') if resource.get('dates')[0] else None
     new_image, created = MarvelImage.objects.get_or_create(
