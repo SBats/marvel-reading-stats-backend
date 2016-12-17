@@ -17,7 +17,7 @@ class CharacterSerializer(serializers.ModelSerializer):
             'comics',
             'events',
             'series_list',
-            )
+        )
         depth = 1
 
 
@@ -28,7 +28,7 @@ class CharacterListSerializer(serializers.ModelSerializer):
         fields = (
             'marvel_id',
             'name',
-            )
+        )
 
 
 class CreatorSerializer(serializers.ModelSerializer):
@@ -46,7 +46,7 @@ class CreatorSerializer(serializers.ModelSerializer):
             'comics',
             'events',
             'series_list',
-            )
+        )
         depth = 1
 
 
@@ -57,7 +57,7 @@ class CreatorListSerializer(serializers.ModelSerializer):
         fields = (
             'marvel_id',
             'full_name',
-            )
+        )
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -76,7 +76,7 @@ class EventSerializer(serializers.ModelSerializer):
             'characters',
             'creators',
             'comics',
-            )
+        )
         depth = 1
 
 
@@ -87,7 +87,7 @@ class EventListSerializer(serializers.ModelSerializer):
         fields = (
             'marvel_id',
             'title',
-            )
+        )
 
 
 class SeriesSerializer(serializers.ModelSerializer):
@@ -102,11 +102,8 @@ class SeriesSerializer(serializers.ModelSerializer):
             'start_year',
             'end_year',
             'image',
-            'events',
-            'characters',
-            'creators',
             'comics',
-            )
+        )
         depth = 1
 
 
@@ -117,7 +114,7 @@ class SeriesListSerializer(serializers.ModelSerializer):
         fields = (
             'marvel_id',
             'title',
-            )
+        )
 
 
 class ComicSerializer(serializers.ModelSerializer):
@@ -134,12 +131,8 @@ class ComicSerializer(serializers.ModelSerializer):
             'url',
             'date',
             'image',
-            'image',
-            'series_list',
             'creators',
-            'characters',
-            'events',
-            )
+        )
         depth = 1
 
 
@@ -150,4 +143,6 @@ class ComicListSerializer(serializers.ModelSerializer):
         fields = (
             'marvel_id',
             'title',
-            )
+            'image',
+        )
+        depth = 1

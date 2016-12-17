@@ -59,13 +59,26 @@ class ComicViewSet(ModelViewSet):
     queryset = Comic.objects.all()
     list_serializer = marvel.serializers.ComicListSerializer
     serializer_class = marvel.serializers.ComicSerializer
+    VALID_FILTERS = ['characters', 'creators', 'events', 'series']
+
+    def format_filters(self, filters):
+        filtered = {}
+        for f in filters:
+            if f in self.VALID_FILTERS and filters.get(f) is not None:
+                key = f
+                if f == 'series':
+                    key = 'series_list'
+                filtered[key] = filters.get(f)
+        return filtered
 
     def get_queryset(self):
         queryset = Comic.objects.all()
-        starting = self.request.query_params.get('startWith', None)
-        if starting is not None:
-            queryset = queryset.filter(title__iregex=r'^{0}'.format(starting))
-        return queryset
+        filters = self.format_filters(self.request.query_params)
+        return (
+            queryset
+            .filter(**filters)
+            .order_by('date')
+        )
 
     def get_serializer_class(self):
         if (self.request.path == '/comics/'):
