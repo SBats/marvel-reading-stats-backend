@@ -464,16 +464,16 @@ class Command(BaseCommand):
         self.private_key = options.get('private_key')
         self.public_key = options.get('public_key')
         resources = [
-            {
-                'name': 'Comics',
-                'endpoint': 'comics',
-                'method': update_a_comic
-            },
-            {
-                'name': 'Events',
-                'endpoint': 'events',
-                'method': update_an_event
-            },
+            # {
+            #     'name': 'Comics',
+            #     'endpoint': 'comics',
+            #     'method': update_a_comic
+            # },
+            # {
+            #     'name': 'Events',
+            #     'endpoint': 'events',
+            #     'method': update_an_event
+            # },
             {
                 'name': 'Creators',
                 'endpoint': 'creators',
@@ -497,7 +497,7 @@ class Command(BaseCommand):
             data = p1.map_async(get_resource_data, urls).get()
             p1.close()
             p1.join()
-            p2 = pool.Pool(processes=100)
+            p2 = pool.Pool(processes=50)
             p2.map_async(
                 resource.get('method'),
                 [item for sublist in data for item in sublist]
