@@ -21,6 +21,16 @@ class CharacterSerializer(serializers.ModelSerializer):
         depth = 1
 
 
+class CharacterListSerializer(serializers.ModelSerializer):
+    """Marvel Character DRF serializer"""
+    class Meta:
+        model = Character
+        fields = (
+            'marvel_id',
+            'name',
+            )
+
+
 class CreatorSerializer(serializers.ModelSerializer):
     """Marvel Creator DRF serializer"""
     class Meta:
@@ -38,6 +48,16 @@ class CreatorSerializer(serializers.ModelSerializer):
             'series_list',
             )
         depth = 1
+
+
+class CreatorListSerializer(serializers.ModelSerializer):
+    """Marvel Creator DRF serializer"""
+    class Meta:
+        model = Creator
+        fields = (
+            'marvel_id',
+            'full_name',
+            )
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -60,6 +80,16 @@ class EventSerializer(serializers.ModelSerializer):
         depth = 1
 
 
+class EventListSerializer(serializers.ModelSerializer):
+    """Marvel Event DRF serializer"""
+    class Meta:
+        model = Event
+        fields = (
+            'marvel_id',
+            'title',
+            )
+
+
 class SeriesSerializer(serializers.ModelSerializer):
     """Marvel Series DRF serializer"""
     class Meta:
@@ -78,6 +108,16 @@ class SeriesSerializer(serializers.ModelSerializer):
             'comics',
             )
         depth = 1
+
+
+class SeriesListSerializer(serializers.ModelSerializer):
+    """Marvel Series DRF serializer"""
+    class Meta:
+        model = Series
+        fields = (
+            'marvel_id',
+            'title',
+            )
 
 
 class ComicSerializer(serializers.ModelSerializer):
@@ -100,3 +140,13 @@ class ComicSerializer(serializers.ModelSerializer):
             'events',
             )
         depth = 1
+
+
+class ComicListSerializer(serializers.ModelSerializer):
+    """Marvel Comic DRF serializer"""
+    class Meta:
+        model = Comic
+        fields = (
+            'marvel_id',
+            'title',
+            )

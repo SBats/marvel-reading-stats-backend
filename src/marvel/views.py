@@ -1,7 +1,13 @@
 """
 Marvel views
 """
-
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.authentication import (
+    SessionAuthentication,
+    TokenAuthentication,
+    BasicAuthentication,
+)
+import marvel.serializers
 from marvel.models import (
     Character,
     Comic,
@@ -9,14 +15,7 @@ from marvel.models import (
     Event,
     Series
 )
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.authentication import (
-    SessionAuthentication,
-    TokenAuthentication,
-    BasicAuthentication,
-)
 from marvel.permissions import IsAccountAdminOrReadOnly
-import marvel.serializers
 
 
 class CharacterViewSet(ModelViewSet):
@@ -30,6 +29,7 @@ class CharacterViewSet(ModelViewSet):
     )
     permission_classes = [IsAccountAdminOrReadOnly]
     queryset = Character.objects.all()
+    list_serializer = marvel.serializers.CharacterListSerializer
     serializer_class = marvel.serializers.CharacterSerializer
 
     def get_queryset(self):
@@ -38,6 +38,12 @@ class CharacterViewSet(ModelViewSet):
         if starting is not None:
             queryset = queryset.filter(name__iregex=r'^{0}'.format(starting))
         return queryset
+
+    def get_serializer_class(self):
+        if (self.request.path == '/characters/'):
+            return self.list_serializer
+        else:
+            return self.serializer_class
 
 
 class ComicViewSet(ModelViewSet):
@@ -51,6 +57,7 @@ class ComicViewSet(ModelViewSet):
     )
     permission_classes = [IsAccountAdminOrReadOnly]
     queryset = Comic.objects.all()
+    list_serializer = marvel.serializers.ComicListSerializer
     serializer_class = marvel.serializers.ComicSerializer
 
     def get_queryset(self):
@@ -59,6 +66,12 @@ class ComicViewSet(ModelViewSet):
         if starting is not None:
             queryset = queryset.filter(title__iregex=r'^{0}'.format(starting))
         return queryset
+
+    def get_serializer_class(self):
+        if (self.request.path == '/comics/'):
+            return self.list_serializer
+        else:
+            return self.serializer_class
 
 
 class CreatorViewSet(ModelViewSet):
@@ -72,14 +85,23 @@ class CreatorViewSet(ModelViewSet):
     )
     permission_classes = [IsAccountAdminOrReadOnly]
     queryset = Creator.objects.all()
+    list_serializer = marvel.serializers.CreatorListSerializer
     serializer_class = marvel.serializers.CreatorSerializer
 
     def get_queryset(self):
         queryset = Creator.objects.all()
         starting = self.request.query_params.get('startWith', None)
         if starting is not None:
-            queryset = queryset.filter(full_name__iregex=r'^{0}'.format(starting))
+            queryset = queryset.filter(
+                full_name__iregex=r'^{0}'.format(starting)
+            )
         return queryset
+
+    def get_serializer_class(self):
+        if (self.request.path == '/creators/'):
+            return self.list_serializer
+        else:
+            return self.serializer_class
 
 
 class EventViewSet(ModelViewSet):
@@ -93,6 +115,7 @@ class EventViewSet(ModelViewSet):
     )
     permission_classes = [IsAccountAdminOrReadOnly]
     queryset = Event.objects.all()
+    list_serializer = marvel.serializers.EventListSerializer
     serializer_class = marvel.serializers.EventSerializer
 
     def get_queryset(self):
@@ -101,6 +124,12 @@ class EventViewSet(ModelViewSet):
         if starting is not None:
             queryset = queryset.filter(title__iregex=r'^{0}'.format(starting))
         return queryset
+
+    def get_serializer_class(self):
+        if (self.request.path == '/events/'):
+            return self.list_serializer
+        else:
+            return self.serializer_class
 
 
 class SeriesViewSet(ModelViewSet):
@@ -114,6 +143,7 @@ class SeriesViewSet(ModelViewSet):
     )
     permission_classes = [IsAccountAdminOrReadOnly]
     queryset = Series.objects.all()
+    list_serializer = marvel.serializers.SeriesListSerializer
     serializer_class = marvel.serializers.SeriesSerializer
 
     def get_queryset(self):
@@ -122,3 +152,9 @@ class SeriesViewSet(ModelViewSet):
         if starting is not None:
             queryset = queryset.filter(title__iregex=r'^{0}'.format(starting))
         return queryset
+
+    def get_serializer_class(self):
+        if (self.request.path == '/series/'):
+            return self.list_serializer
+        else:
+            return self.serializer_class
