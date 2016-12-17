@@ -3,7 +3,7 @@ from django.db import models
 
 class Comic(models.Model):
     marvel_id = models.IntegerField(primary_key=True)
-    title = models.CharField(max_length=200)
+    title = models.CharField(db_index=True, max_length=200)
     variant_description = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     page_count = models.PositiveSmallIntegerField(default=0, blank=True)

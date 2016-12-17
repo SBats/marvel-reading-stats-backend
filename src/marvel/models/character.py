@@ -3,7 +3,7 @@ from django.db import models
 
 class Character(models.Model):
     marvel_id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=200)
+    name = models.CharField(db_index=True, max_length=200)
     description = models.TextField(null=True, blank=True)
     url = models.TextField(null=True, blank=True)
     image = models.ForeignKey('MarvelImage', null=True, blank=True)

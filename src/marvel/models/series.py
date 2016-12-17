@@ -3,7 +3,7 @@ from django.db import models
 
 class Series(models.Model):
     marvel_id = models.IntegerField(primary_key=True)
-    title = models.CharField(max_length=200)
+    title = models.CharField(db_index=True, max_length=200)
     description = models.TextField(null=True, blank=True)
     url = models.TextField(null=True, blank=True)
     start_year = models.PositiveSmallIntegerField(null=True, blank=True)

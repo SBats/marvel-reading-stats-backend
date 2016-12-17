@@ -6,7 +6,7 @@ class Creator(models.Model):
     first_name = models.CharField(null=True, max_length=200, blank=True)
     last_name = models.CharField(null=True, max_length=200, blank=True)
     suffix = models.CharField(null=True, max_length=200, blank=True)
-    full_name = models.CharField(null=True, max_length=600)
+    full_name = models.CharField(db_index=True, null=True, max_length=600)
     url = models.TextField(null=True, blank=True)
     image = models.ForeignKey('MarvelImage', null=True, blank=True)
     comics = models.ManyToManyField('Comic', through='Role', blank=True)
